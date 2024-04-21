@@ -4,11 +4,25 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CookieResolverService {
 
     public HttpServletResponse addCookies(HttpServletResponse response, String token, UUID id);
+
+    default Optional<UUID> getId(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null) return Optional.empty();
+
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals("user_id")){
+                String id = cookie.getValue();
+                if (id != null) return Optional.of(UUID.fromString(id));
+            }
+        }
+        return  Optional.empty();
+    }
 
     default void removeCookies(HttpServletRequest request, HttpServletResponse response) {
         if (request.getCookies() != null) {

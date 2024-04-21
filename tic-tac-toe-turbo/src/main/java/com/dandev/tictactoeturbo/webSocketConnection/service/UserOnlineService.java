@@ -18,4 +18,5 @@ public interface UserOnlineService {
     void sendEvent(UUID id, Event event);
     void turnOffline(WebSocketSession session);
 
+    void turnOffline(UUID uuid);
 }

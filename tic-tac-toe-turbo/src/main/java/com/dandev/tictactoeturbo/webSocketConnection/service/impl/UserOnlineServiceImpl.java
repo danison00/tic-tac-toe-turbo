@@ -53,7 +53,7 @@ public class UserOnlineServiceImpl implements UserOnlineService {
         this.usersonline.put(user.get().getId(), user.get());
         this.sessionService.put(user.get().getId(), session);
         this.eventService.sendEvent(new Event(null, id, user.get(), EventType.USER_DATA), session);
-        System.out.println("conxao: "+ user.get().getName());
+        System.out.println("conxao: " + user.get().getName());
 
     }
 
@@ -76,6 +76,11 @@ public class UserOnlineServiceImpl implements UserOnlineService {
         usersonline.remove(id);
         sessionService.remove(id);
 
+    }
+
+    @Override
+    public void turnOffline(UUID uuid) {
+        turnOffline(sessionService.get(uuid));
     }
 
 
