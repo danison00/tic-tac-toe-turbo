@@ -52,30 +52,4 @@ public class SecurityFilterConfigBean {
 
     }
 
-
-
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        return http
-//                .cors(Customizer.withDefaults())
-//                .exceptionHandling(customizer -> customizer.authenticationEntryPoint((new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))))
-//                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(authorize -> {
-//                    authorize.requestMatchers("/", "/public/**", "/auth/**").permitAll()
-//                            .requestMatchers(new RequestMatcherAuthBasic()).permitAll()
-//                            .anyRequest().authenticated();
-//
-//                })
-//
-//                .addFilterAfter(new Filter() {
-//                    @Override
-//                    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//                        System.out.println("estou no filtro kkkkk");
-//                        filterChain.doFilter(servletRequest, servletResponse);
-//                    }
-//                }, AuthorizationFilter.class)
-//                .build();
-//
-//    }
-
 }

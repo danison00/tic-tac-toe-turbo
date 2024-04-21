@@ -2,18 +2,16 @@ package com.dandev.tictactoeturbo.controllers;
 
 
 import com.dandev.tictactoeturbo.controllers.dtos.NewUserRequest;
+import com.dandev.tictactoeturbo.controllers.dtos.UsernameExistsDto;
 import com.dandev.tictactoeturbo.model.entity.User;
 import com.dandev.tictactoeturbo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/public/user/")
+@RequestMapping("/api/public/user")
 public class UserController {
 
     @Autowired
@@ -29,5 +27,11 @@ public class UserController {
 
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("username-exists")
+    public ResponseEntity<UsernameExistsDto> usernameExists(@RequestParam("username") String username) {
+
+        return ResponseEntity.ok(new UsernameExistsDto(this.userService.usernameAlreadyExists(username)));
     }
 }
