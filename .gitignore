@@ -1,0 +1,52 @@
+tic-tac-toe-front/dist
+tic-tac-toe-front/tmp
+tic-tac-toe-front/out-tsc
+tic-tac-toe-front/bazel-out
+
+tic-tac-toe-front/node_modules
+tic-tac-toe-front/npm-debug.log
+tic-tac-toe-front/yarn-error.log
+
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+tic-tac-toe-front/.angular/cache
+tic-tac-toe-front/.sass-cache/
+tic-tac-toe-front/connect.lock
+tic-tac-toe-front/coverage
+/libpeerconnection.log
+testem.log
+tic-tac-toe-front/typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+.vscode/settings.json
+
+/tic-tac-toe-turbo/target
+/tic-tac-toe-turbo/.idea
+/tic-tac-toe-turbo/.mvn
+/tic-tac-toe-turbo/mvnw
+/tic-tac-toe-turbo/mvnw.cmd
+/tic-tac-toe-front/.angular
+/tic-tac-toe-front/node_modules
+/tic-tac-toe-front/.vscode
+/tic-tac-toe-front/dist
+/tic-tac-toe-front/.editorconfig

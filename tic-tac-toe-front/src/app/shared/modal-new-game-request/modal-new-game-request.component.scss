@@ -1,0 +1,51 @@
+
+.modal {
+
+  animation: animationScale 0.8s;
+
+  div {
+    padding: 1rem 2rem 0.5rem 1rem;
+  }
+  & div:nth-last-child(1) {
+    padding-bottom: 1.2rem;
+  }
+
+  .title {
+    border-bottom: 1px solid #dadada;
+    display: flex;
+    justify-content: center;
+  }
+  .box-btn {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    button {
+      width: 6.2rem;
+      padding: 0.4rem 0;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    & button:nth-child(1) {
+      background-color: #cd5757;
+      border: 1px solid #c74646;
+      color: #eeeeee;
+      &:hover {
+        background-color: #c44a4a;
+      }
+    }
+    & button:nth-child(2) {
+      background-color: #7ce16b;
+      border: 1px solid #68cd57;
+      color: #05641a;
+      &:hover {
+        background-color: #6bd857;
+      }
+    }
+  }
+}
+.view {
+  display: flex;
+}
+

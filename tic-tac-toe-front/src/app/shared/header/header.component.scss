@@ -1,0 +1,27 @@
+.header {
+  background-color: #d8d7d7;
+  height: 3.7rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3rem;
+  img{
+    height: 90%;
+  }
+  button{
+    width: 6rem;
+    border: 1px solid #b1b1b1;
+    &:hover{
+      background-color: #e6e5e5;
+    }
+  }
+}
+@media only screen and (max-width:400px){
+  .header {
+    padding: 0 1rem;
+    img{
+      height: 75%;
+    }
+  }
+  
+}

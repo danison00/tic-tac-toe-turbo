@@ -1,0 +1,32 @@
+<h2>Faca seu Login</h2>
+<form [formGroup]="formLogin" #form="ngForm" (click)="loginInvalidControl = false">
+  <input
+    [ngClass]="{
+      'alert': formLogin.get('username')?.invalid && form.submitted
+    }"
+    formControlName="username"
+    type="text"
+    placeholder="username"
+  />
+  <div>
+
+    <input
+    formControlName="password"
+    [ngClass]="{
+      'alert': formLogin.get('password')?.invalid && form.submitted
+    }"
+    type="password"
+    placeholder="password"
+    />
+    <span *ngIf="loginInvalidControl" style="font-size: 11px; color: red;">Usuário ou senha inválidos</span>
+  </div>
+  <button (click)="onLogin()">Login</button>
+</form>
+
+<div class="box-btn">
+  <br />
+  <span>ou</span>
+  <br />
+  <button (click)="onLoginOauth2()">Google</button>
+</div>
+<h5 class="register-link">Não tem um registro? <a  [href]="['tic-tac-toe/register']">Faça o agora</a></h5>

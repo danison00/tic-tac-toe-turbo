@@ -1,0 +1,38 @@
+
+<h2>Registre sua conta</h2>
+<form [formGroup]="formRegister" #form="ngForm">
+  <input
+    [ngClass]="{
+      alert: formRegister.get('name')?.invalid && form.submitted
+    }"
+    formControlName="name"
+    type="text"
+    placeholder="nome"
+  />
+  <div >
+    <input
+    (click)="usernameUnavailableControl = false"
+      [ngClass]="{
+        alert: formRegister.get('username')?.invalid && form.submitted
+      }"
+      formControlName="username"
+      type="text"
+      placeholder="username"
+    />
+    <span *ngIf="usernameUnavailableControl" class="alert">Username indisponível</span>
+  </div>
+  <input
+    formControlName="password"
+    [ngClass]="{
+      alert: formRegister.get('password')?.invalid && form.submitted
+    }"
+    type="password"
+    placeholder="password"
+  />
+  <button (click)="onRegister()">Registrar</button>
+</form>
+
+<h5 class="login-link">
+  Já tem um registro? <a [href]="['tic-tac-toe/login']">Faça seu login</a>
+</h5>
+<app-modal-account-register-successful [view]="modalRegisterSuccessfulControl"/>

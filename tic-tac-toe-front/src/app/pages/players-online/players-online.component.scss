@@ -1,0 +1,129 @@
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 3.7rem);
+}
+section {
+  width: 30rem;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  h2 {
+    font-weight: 600;
+  }
+}
+.container {
+  padding: 1.5rem 2rem;
+  width: 100%;
+  height: 70%;
+  background-color: #eaeaea;
+  flex: 1;
+  border-radius: 3px;
+  border: solid 1px #dadada;
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.box-search {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  input {
+    flex: 1;
+    background-color: #efefef;
+    border-radius: 3px;
+    border: 1px solid #d8d8d8;
+    padding: 0.4rem 0.8rem;
+    &:focus {
+      box-shadow: 0px 0px 2px 1px rgba(69, 68, 77, 0.192); /* Define um efeito de sombra ao focar */
+      outline: none;
+    }
+  }
+  button {
+    background-color: #95c6ff;
+    border-radius: 3px;
+    border: 1px solid #85b1e4;
+    padding: 0.4rem 1.2rem;
+    color: #022e87;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      background-color: #8cc0fd;
+    }
+  }
+}
+.list-players {
+  overflow: scroll;
+  ul {
+    margin-right: 1px;
+  }
+  li {
+    list-style: decimal;
+    list-style-position: inside;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+      margin-right: 6px;
+    }
+    button {
+      background-color: #7ce16b;
+      border-radius: 3px;
+      border: 1px solid #68cd57;
+      height: 1.8rem;
+      padding: 0 1.2rem;
+      color: #05641a;
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        background-color: #6bd857;
+      }
+    }
+  }
+  li + li {
+    margin-top: 0.6rem;
+  }
+  .box-no-players {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    img {
+      width: 70px;
+    }
+   
+  }
+}
+@media only screen and (max-width: 500px) {
+  main {
+    padding: 0 1rem;
+  }
+}
+@media only screen and (max-width: 400px) {
+  section {
+    width: 100%;
+  }
+  .container {
+    padding: 1rem 1rem;
+  }
+}
+@media only screen and (max-width: 370px) {
+  .box-search {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+    button {
+      width: 5rem;
+    }
+    input {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<section class="filter-blur view">
+  <div class="modal">
+    <div class="title">
+      <h3>Nova solicitação de Jogo! 🎮</h3>
+    </div>
+    <div class="payload">
+      <p>
+      <strong>{{firstName}}  {{lastName}}</strong> desafia você a uma partida. Deseja aceitar?
+      </p>
+    </div>
+    <div class="box-btn">
+      <button (click)="gameReject.emit()">Rejeitar</button>
+      <button (click)="gameAccept.emit()">Aceitar</button>
+    </div>
+  </div>
+</section>
