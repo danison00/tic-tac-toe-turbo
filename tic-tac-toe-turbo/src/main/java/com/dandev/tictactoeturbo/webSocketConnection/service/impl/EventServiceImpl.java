@@ -1,6 +1,6 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service.impl;
 
-import com.dandev.tictactoeturbo.model.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
 import com.dandev.tictactoeturbo.webSocketConnection.service.EventService;
 import com.dandev.tictactoeturbo.util.Mapper;
 import org.springframework.stereotype.Service;

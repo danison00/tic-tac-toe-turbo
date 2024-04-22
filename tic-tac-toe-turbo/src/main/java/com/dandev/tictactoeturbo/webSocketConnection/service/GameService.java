@@ -1,7 +1,7 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service;
 
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;
-import com.dandev.tictactoeturbo.model.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
 
 import java.util.UUID;
 

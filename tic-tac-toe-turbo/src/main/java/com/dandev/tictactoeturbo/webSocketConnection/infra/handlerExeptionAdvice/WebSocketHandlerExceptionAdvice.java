@@ -1,9 +1,9 @@
 package com.dandev.tictactoeturbo.webSocketConnection.infra.handlerExeptionAdvice;
 
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;
-import com.dandev.tictactoeturbo.model.Event;
-import com.dandev.tictactoeturbo.model.EventType;
-import com.dandev.tictactoeturbo.webSocketConnection.infra.webSocketHandler.WebSocketHandler;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.EventType;
+import com.dandev.tictactoeturbo.webSocketConnection.WebSocketEventsHandler;
 import com.dandev.tictactoeturbo.webSocketConnection.service.GameService;
 import com.dandev.tictactoeturbo.webSocketConnection.service.UserOnlineService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,7 +14,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.util.UUID;
 
 @Component
-public class WebSocketHandlerExceptionAdvice extends WebSocketHandler {
+public class WebSocketHandlerExceptionAdvice extends WebSocketEventsHandler {
 
     private final UserOnlineService userOnlineService;
     WebSocketHandlerExceptionAdvice(UserOnlineService userOnlineService, GameService gameService) {

@@ -1,7 +1,8 @@
-package com.dandev.tictactoeturbo.webSocketConnection.infra.webSocketHandler;
+package com.dandev.tictactoeturbo.webSocketConnection;
 
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Move;
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;
-import com.dandev.tictactoeturbo.model.*;
 import com.dandev.tictactoeturbo.webSocketConnection.service.GameService;
 import com.dandev.tictactoeturbo.webSocketConnection.service.UserOnlineService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,14 +17,14 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 import java.util.logging.Logger;
 
 @Component
-public class WebSocketHandler extends TextWebSocketHandler {
+public class WebSocketEventsHandler extends TextWebSocketHandler {
 
     private final UserOnlineService userOnlineService;
     private final GameService gameService;
-    private final static Logger LOGGER = Logger.getLogger(WebSocketHandler.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(WebSocketEventsHandler.class.getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public WebSocketHandler(UserOnlineService userOnlineService, GameService gameService) {
+    public WebSocketEventsHandler(UserOnlineService userOnlineService, GameService gameService) {
         this.userOnlineService = userOnlineService;
         this.gameService = gameService;
     }

@@ -1,6 +1,5 @@
-package com.dandev.tictactoeturbo.model;
+package com.dandev.tictactoeturbo.webSocketConnection.dtos;
 
-import com.dandev.tictactoeturbo.model.entity.Game;
 import com.dandev.tictactoeturbo.model.entity.Player;
 
 import java.io.Serializable;

@@ -1,8 +1,8 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service.impl;
 
-import com.dandev.tictactoeturbo.model.Event;
-import com.dandev.tictactoeturbo.model.EventType;
-import com.dandev.tictactoeturbo.model.Move;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.EventType;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Move;
 import com.dandev.tictactoeturbo.model.entity.Game;
 import com.dandev.tictactoeturbo.model.entity.Player;
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;

@@ -1,4 +1,4 @@
-package com.dandev.tictactoeturbo.model;
+package com.dandev.tictactoeturbo.webSocketConnection.dtos;
 
 
 import java.io.Serializable;

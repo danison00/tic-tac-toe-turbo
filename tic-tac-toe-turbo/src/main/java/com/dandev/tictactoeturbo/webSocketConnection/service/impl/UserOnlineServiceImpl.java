@@ -1,8 +1,8 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service.impl;
 
-import com.dandev.tictactoeturbo.model.EventType;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.EventType;
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;
-import com.dandev.tictactoeturbo.model.Event;
+import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
 import com.dandev.tictactoeturbo.model.entity.User;
 import com.dandev.tictactoeturbo.repository.UserRespository;
 import com.dandev.tictactoeturbo.webSocketConnection.service.EventService;
