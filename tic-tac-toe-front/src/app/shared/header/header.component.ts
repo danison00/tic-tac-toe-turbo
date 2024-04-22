@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormLoginComponent } from 'src/app/pages/authentication/fragments/form-login/form-login.component';
-import { VarsGlobalService } from 'src/app/utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-header',
@@ -10,9 +10,9 @@ import { VarsGlobalService } from 'src/app/utils/vars-global.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private http: HttpClient, private route: Router, private global:  VarsGlobalService) {}
+  constructor(private http: HttpClient, private route: Router) {}
   onLogout() {
-    this.http.get(this.global.baseUrl+'/auth/logout', {withCredentials: true, }).subscribe(() => {
+    this.http.get(environment.baseUrl+'/logout', {withCredentials: true, }).subscribe(() => {
       this.route.navigate([FormLoginComponent])
     });  
     

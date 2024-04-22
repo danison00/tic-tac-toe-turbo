@@ -1,11 +1,5 @@
-import { User } from './model/interfaces/User.interface';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SocketService } from './service/socket.service';
-import { Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { Event } from './model/interfaces/Event.interface';
-import { EventType } from './model/entities/EventType.enum';
-import { UtilService } from './utils/utils.service';
+import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-root',

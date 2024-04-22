@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Event } from '../model/interfaces/Event.interface';
 import { UtilService } from '../utils/utils.service';
-import { VarsGlobalService } from '../utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class SocketService {
 
   private event = new Subject<Event>();
 
-  constructor(private util: UtilService, private global: VarsGlobalService) {}
+  constructor(private util: UtilService) {}
 
   public connect(): void {
     if (this.connection)
@@ -21,7 +21,7 @@ export class SocketService {
     const userId = this.util.getCookie('user_id');
     if (userId == null) return;
 
-    this.connection = new WebSocket('ws://'+this.global.domain+'/chat?id=' + userId);
+    this.connection = new WebSocket('ws://'+environment.domain+'/game?id=' + userId);
     this.connection.onmessage = (e) => this._listenEvent(e);
     this.connection.onopen = () => {
       console.info('Connection wesocket estabilish!');
@@ -32,8 +32,6 @@ export class SocketService {
   }
   private _listenEvent(e: MessageEvent) {
     const event: Event = JSON.parse(e.data);
-    // this.event.next(this.mapper.getEvent(event));
-
     this.event.next(event);
   }
   public sendEvent(event: Event) {

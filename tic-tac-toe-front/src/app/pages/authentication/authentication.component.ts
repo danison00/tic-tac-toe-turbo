@@ -1,10 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, of, switchMap, takeUntil } from 'rxjs';
 import { UtilService } from 'src/app/utils/utils.service';
-import { VarsGlobalService } from 'src/app/utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-authentication',
@@ -14,7 +13,6 @@ import { VarsGlobalService } from 'src/app/utils/vars-global.service';
 export class AuthenticationComponent implements OnInit, OnDestroy {
   private unsubscribeTrigger = new Subject<void>();
   constructor(
-    private global: VarsGlobalService,
     private http: HttpClient,
     private util: UtilService,
     private router: Router,
@@ -52,7 +50,7 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
   private getTokenAuthenticatonInCookie(code: string) {
     const param = new HttpParams().set('code', code);
     this.http
-      .get(this.global.baseUrl+'/auth/callback', {
+      .get(environment.baseUrl+'/auth/callback', {
         params: param,
         withCredentials: true,
       })

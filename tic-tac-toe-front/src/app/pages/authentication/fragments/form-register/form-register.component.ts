@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of, switchMap, throwError } from 'rxjs';
 import { UserRegister } from 'src/app/dto/UserRegister.interface';
 import { UsernameExists } from 'src/app/dto/UsernameExists.interface';
-import { VarsGlobalService } from 'src/app/utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-form-register',
@@ -15,7 +15,7 @@ export class FormRegisterComponent implements OnDestroy{
   protected formRegister: FormGroup;
   protected usernameUnavailableControl = false;
   modalRegisterSuccessfulControl = false;
-  constructor(fb: FormBuilder, private http: HttpClient, private global: VarsGlobalService) {
+  constructor(fb: FormBuilder, private http: HttpClient) {
     this.formRegister = fb.group({
       name: [null, [Validators.minLength(5), Validators.required]],
       username: [null, [Validators.minLength(4), Validators.required]],
@@ -43,7 +43,7 @@ export class FormRegisterComponent implements OnDestroy{
         }),
         switchMap(() => {
           return this.http.post<HttpStatusCode>(
-            this.global.baseUrl+'/user/register',
+            environment.baseUrl+'/user/register',
             {
               username: newUser.username,
               password: newUser.password,
@@ -65,7 +65,7 @@ export class FormRegisterComponent implements OnDestroy{
   verifyUsernameAvailable() {
     const username = this.formRegister.get('username')?.value;
     return this.http
-      .get<UsernameExists>(this.global.baseUrl+'/auth/username-exists', {
+      .get<UsernameExists>(environment.baseUrl+'/user/username-exists', {
         params: { username: username },
       })
       .pipe(

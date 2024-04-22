@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Login } from 'src/app/dto/login.interface';
 import { UrlDto } from 'src/app/dto/auth/UrlDto.interface';
 import { Subject, of, switchMap, takeUntil } from 'rxjs';
-import { VarsGlobalService } from 'src/app/utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-form-login',
@@ -16,7 +16,7 @@ export class FormLoginComponent {
   formLogin: FormGroup;
   protected loginInvalidControl = false;
 
-  constructor(private http: HttpClient, private fb: FormBuilder, private global:VarsGlobalService) {
+  constructor(private http: HttpClient, private fb: FormBuilder) {
     this.formLogin = this.fb.group({
       username: [null, [Validators.required, Validators.minLength(4)]],
       password: [null, [Validators.required, Validators.minLength(3)]],
@@ -31,7 +31,7 @@ export class FormLoginComponent {
 
     this.http
       .post(
-        this.global.baseUrl+'/auth/login',
+        environment.baseUrl+'/login/basicAuth',
         { username: login.username, password: login.password },
         { withCredentials: true }
       )
@@ -48,7 +48,7 @@ export class FormLoginComponent {
   }
   onLoginOauth2() {
     this.http
-      .get<UrlDto>(this.global.baseUrl+'/auth/url')
+      .get<UrlDto>(environment.baseUrl+'/login/OAuth2/url')
       .pipe(
         switchMap((urlDto: UrlDto) => {
           return of(urlDto);

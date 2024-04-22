@@ -7,7 +7,7 @@ import { Event } from 'src/app/model/interfaces/Event.interface';
 import { User } from 'src/app/model/interfaces/User.interface';
 import { SocketService } from 'src/app/service/socket.service';
 import { CookieServiceService } from 'src/app/utils/cookie-service.service';
-import { VarsGlobalService } from 'src/app/utils/vars-global.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-page-host',
@@ -22,7 +22,6 @@ export class PageHostComponent {
   protected viewModal = false;
 
   constructor(
-    private global: VarsGlobalService,
     private cookieService: CookieServiceService,
     private socketService: SocketService,
     private router: Router,
@@ -32,7 +31,6 @@ export class PageHostComponent {
   ngOnInit(): void {
     this.listenEvent();
     this.socketService.connect();
-    this.global.getIdUser();
   }
   ngOnDestroy(): void {
     this.unsubscribeTrigger$.next();
@@ -86,7 +84,7 @@ export class PageHostComponent {
   onLogout() {
     this.http
       .post(
-        this.global.baseUrl + '/authentication/logouter',
+       environment.baseUrl + '/authentication/logouter',
         {},
         { withCredentials: true }
       )
