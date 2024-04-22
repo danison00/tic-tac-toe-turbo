@@ -39,7 +39,7 @@ public class WebSocketEventsHandler extends TextWebSocketHandler {
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws JsonProcessingException, UserNotOnline {
 
 
-        Event event = objectMapper.readValue(message.getPayload().toString(), Event.class);
+        Event<?> event = objectMapper.readValue(message.getPayload().toString(), Event.class);
 
         LOGGER.info(session.getId() + " ->  " + event+"WebSocketHandler.java:41");
 
