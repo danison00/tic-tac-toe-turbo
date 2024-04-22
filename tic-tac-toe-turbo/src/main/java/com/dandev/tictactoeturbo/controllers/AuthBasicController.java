@@ -1,6 +1,7 @@
 package com.dandev.tictactoeturbo.controllers;
 
 import com.dandev.tictactoeturbo.controllers.dtos.LoginDto;
+import com.dandev.tictactoeturbo.infra.exceptions.InvalidUsernameOrPassword;
 import com.dandev.tictactoeturbo.infra.security.jwt.TokenResolverService;
 import com.dandev.tictactoeturbo.infra.security.cookies.CookieResolverService;
 import com.dandev.tictactoeturbo.model.entity.User;
@@ -40,7 +41,7 @@ public class AuthBasicController {
         System.out.println(userDto.toString());
         if (!userService.usernameAlreadyExists(userDto.username()))
 
-            throw new RuntimeException("Usuário inexistente ou senha inválida!");
+            throw new InvalidUsernameOrPassword("Usuário inexistente ou senha inválida!");
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(userDto.username(), userDto.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);

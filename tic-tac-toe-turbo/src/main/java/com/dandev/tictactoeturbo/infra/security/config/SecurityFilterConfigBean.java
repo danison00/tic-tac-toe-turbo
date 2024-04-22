@@ -36,7 +36,6 @@ public class SecurityFilterConfigBean {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .exceptionHandling(customizer -> customizer.authenticationEntryPoint((new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))))
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/", "tic-tac-toe/**", "api/public/**", "/templates/**", "/js/**", "/css/**", "/assets/**").permitAll()
