@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -7,7 +6,6 @@ import { Event } from 'src/app/model/interfaces/Event.interface';
 import { User } from 'src/app/model/interfaces/User.interface';
 import { SocketService } from 'src/app/service/socket.service';
 import { CookieServiceService } from 'src/app/utils/cookie-service.service';
-import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-page-host',
@@ -25,7 +23,6 @@ export class PageHostComponent {
     private cookieService: CookieServiceService,
     private socketService: SocketService,
     private router: Router,
-    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -81,13 +78,4 @@ export class PageHostComponent {
     return this.cookieService.getValue('user_id');
   }
 
-  onLogout() {
-    this.http
-      .post(
-       environment.baseUrl + '/authentication/logouter',
-        {},
-        { withCredentials: true }
-      )
-      .subscribe((v) => console.log(v));
-  }
 }

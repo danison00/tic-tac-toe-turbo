@@ -1,10 +1,9 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Login } from 'src/app/dto/login.interface';
-import { UrlDto } from 'src/app/dto/auth/UrlDto.interface';
-import { Subject, of, switchMap, takeUntil } from 'rxjs';
-import { environment } from 'src/environments/environment.dev';
+import { LoginDto } from 'src/app/dto/login.interface';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/service/auth.service';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-login',
@@ -16,7 +15,7 @@ export class FormLoginComponent {
   formLogin: FormGroup;
   protected loginInvalidControl = false;
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private fb: FormBuilder) {
     this.formLogin = this.fb.group({
       username: [null, [Validators.required, Validators.minLength(4)]],
       password: [null, [Validators.required, Validators.minLength(3)]],
@@ -24,39 +23,25 @@ export class FormLoginComponent {
   }
 
   onLogin() {
-    if ((this, this.formLogin.invalid)) return;
+    if (this.formLogin.invalid) return;
 
-    const login = this.formLogin.value as Login;
-    console.log(login);
-
-    this.http
-      .post(
-        environment.baseUrl+'/login/basicAuth',
-        { username: login.username, password: login.password },
-        { withCredentials: true }
-      )
+    const login: LoginDto = {
+      username: this.formLogin.get('username')?.value,
+      password: this.formLogin.get('password')?.value,
+    };
+    this.authService
+      .login(login)
+      .pipe(takeUntil(this.unsubscribeTrigger))
       .subscribe({
         next: () => {
-             document.location.reload();
+          document.location.reload();
         },
-        error: (error) => {
-          if (error.status === 401) {
-            this.loginInvalidControl = true;
-          }
+        error: () => {
+          this.loginInvalidControl = true;
         },
       });
   }
   onLoginOauth2() {
-    this.http
-      .get<UrlDto>(environment.baseUrl+'/login/OAuth2/url')
-      .pipe(
-        switchMap((urlDto: UrlDto) => {
-          return of(urlDto);
-        })
-      )
-      .pipe(takeUntil(this.unsubscribeTrigger))
-      .subscribe((urlDto: UrlDto) => {
-         window.location.href = urlDto.authUrl;
-      });
+    this.authService.loginOAuth2();
   }
 }

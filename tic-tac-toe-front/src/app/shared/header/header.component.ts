@@ -1,8 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormLoginComponent } from 'src/app/pages/authentication/fragments/form-login/form-login.component';
-import { environment } from 'src/environments/environment.dev';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,13 +7,8 @@ import { environment } from 'src/environments/environment.dev';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private http: HttpClient, private route: Router) {}
+  constructor(private auth: AuthService) {}
   onLogout() {
-    this.http.get(environment.baseUrl+'/logout', {withCredentials: true, }).subscribe(() => {
-      this.route.navigate([FormLoginComponent])
-    });  
-    
+    this.auth.logout();
   }
-  
-
 }

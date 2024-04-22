@@ -1,9 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, of, switchMap, takeUntil } from 'rxjs';
+import { AuthService } from 'src/app/service/auth.service';
 import { UtilService } from 'src/app/utils/utils.service';
-import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-authentication',
@@ -13,13 +12,11 @@ import { environment } from 'src/environments/environment.dev';
 export class AuthenticationComponent implements OnInit, OnDestroy {
   private unsubscribeTrigger = new Subject<void>();
   constructor(
-    private http: HttpClient,
+    private authService: AuthService,
     private util: UtilService,
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) {
-   
-  }
+  ) {}
 
   ngOnInit() {
     const isAuth = this.util.getCookie('is_auth');
@@ -38,7 +35,12 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribeTrigger))
       .subscribe((code: string) => {
         if (code) {
-          this.getTokenAuthenticatonInCookie(code);
+          this.authService
+            .getCookieAuthenticaton(code)
+            .pipe(takeUntil(this.unsubscribeTrigger))
+            .subscribe(() => {
+              this.router.navigate(['tic-tac-toe', 'home']);
+            });
         }
       });
   }
@@ -47,20 +49,4 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
     this.unsubscribeTrigger.next();
     this.unsubscribeTrigger.complete();
   }
-  private getTokenAuthenticatonInCookie(code: string) {
-    const param = new HttpParams().set('code', code);
-    this.http
-      .get(environment.baseUrl+'/auth/callback', {
-        params: param,
-        withCredentials: true,
-      })
-      .pipe(takeUntil(this.unsubscribeTrigger))
-      .subscribe((resp: any) => {
-        console.log('reload');
-
-        document.location.reload();
-      });
-  }
- 
-
 }
