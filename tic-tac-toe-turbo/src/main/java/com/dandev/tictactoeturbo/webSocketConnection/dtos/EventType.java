@@ -9,9 +9,9 @@ public enum EventType implements Serializable {
     USER_DATA,
     CONNECTION,
     PLAYER_WINS,
-    USER_NOT_ONLINE, GET_USERS_ONLINE,
+    USER_NOT_ONLINE,
+    GET_USERS_ONLINE,
     NEW_GAME_ACCEPT,
-    NEW_GAME,
     GET_GAME
 
 }

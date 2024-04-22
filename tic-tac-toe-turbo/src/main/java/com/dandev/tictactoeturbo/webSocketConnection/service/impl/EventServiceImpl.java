@@ -20,7 +20,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public void sendEvent( Event event, WebSocketSession session) {
         String eventSerialized = mapper.serialize(event);
-        System.out.println(eventSerialized+" EventServiceImp.java:23");
         try {
             session.sendMessage(new TextMessage(eventSerialized));
         } catch (IOException e) {
