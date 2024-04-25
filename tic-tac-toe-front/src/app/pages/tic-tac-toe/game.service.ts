@@ -1,5 +1,13 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Subject, of, switchMap, takeUntil } from 'rxjs';
+import {
+  Subject,
+  Subscription,
+  first,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { Board } from 'src/app/model/entities/Board';
 import { EventType } from 'src/app/model/entities/EventType.enum';
 import { Game } from 'src/app/model/entities/Game.entity';
@@ -21,6 +29,8 @@ export class GameService {
   $hasWinner = new EventEmitter<Player>();
   $getGameEvent = new EventEmitter<void>();
   private _$unsubscribeTrigger!: Subject<void>;
+  private reset!: () => void;
+  private hasWinner!: (player: Player) => void;
 
   constructor(
     private senderEvent: GameEventSenderService,
@@ -28,11 +38,16 @@ export class GameService {
     private util: UtilService
   ) {}
 
-  public init($unsubscribeTrigger: Subject<void>) {
+  public init(
+    $unsubscribeTrigger: Subject<void>,
+    reset: () => void,
+    hasWinner: (player: Player) => void
+  ) {
+    this.reset = reset;
+    this.hasWinner = hasWinner;
     this._$unsubscribeTrigger = $unsubscribeTrigger;
     this._id = this.cookieService.getValue('user_id') ?? '';
     this.getGameById();
-    return this;
   }
 
   public movePlayer1(line: number, column: number) {
@@ -62,16 +77,16 @@ export class GameService {
   }
 
   public getGameById = () => {
-    this.util
-      .getIdGameByUrl()
-      .pipe(takeUntil(this._$unsubscribeTrigger))
-      .subscribe((idGame: string | null) => {
-        if (idGame) this.senderEvent.getGame(this.id, idGame);
-      });
+    this.util.getIdGameByUrl()
+    .pipe(first())
+    .subscribe((idGame: string | null) => {
+      if (idGame) this.senderEvent.getGame(this.id, idGame);
+      while(true){}
+    });
   };
 
   public handleGetGame(game: GameDto) {
-    this.$getGameEvent.next();
+    this.reset();
     let player1: Player =
       game.player1.id === this.id ? game.player1 : game.player2;
     let player2: Player =
@@ -89,7 +104,9 @@ export class GameService {
     this._game
       .hasWinner()
       .pipe(takeUntil(this._$unsubscribeTrigger))
-      .subscribe(this.$hasWinner);
+      .subscribe((player: Player) => {
+        this.hasWinner(player);
+      });
   }
   get game() {
     return this._game;

@@ -6,6 +6,7 @@ import { SocketService } from 'src/app/service/socket.service';
 
 @Injectable({
   providedIn: 'root',
+  
 })
 export class GameEventSenderService {
   constructor(private socketService: SocketService) {}

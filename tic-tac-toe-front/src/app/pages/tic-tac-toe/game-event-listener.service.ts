@@ -25,26 +25,19 @@ export class GameEventListenerService {
           switch (event.type) {
             case EventType.GET_GAME: {
               this.handleGetGame(event.payload as GameDto);
-
               break;
             }
-
             case EventType.MOVE: {
               this.moveHandle(event.payload as Move);
-              console.log('move');
-
             }
           }
         },
       });
-      return this;
   }
   moveHandle(move: Move) {
    this.gameService.movePlayer2(move)
   }
   handleGetGame(gameDto: GameDto) {
-    // TODO: handle get Game
     this.gameService.handleGetGame(gameDto);
-    console.log(gameDto);
   }
 }

@@ -20,8 +20,6 @@ public class SessionServiceImpl implements SessionService {
     public SessionServiceImpl(Mapper mapper) {
         this.mapper = mapper;
     }
-
-
     @Override
     public void put(UUID id, WebSocketSession session) {
         sessions.put(id, session);
@@ -32,8 +30,6 @@ public class SessionServiceImpl implements SessionService {
         if (!sessions.containsKey(id)) throw new SessionNotFound("Sessão não encontrada.");
         return sessions.get(id);
     }
-
-
     @Override
     public void remove(UUID id) {
             sessions.remove(id);

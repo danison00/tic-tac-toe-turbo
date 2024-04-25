@@ -25,31 +25,23 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
     this.$unsubscribeTrigger.complete();
   }
   ngOnInit(): void {
-    this.gameService.init(this.$unsubscribeTrigger);
-    this.gameService.$hasWinner
-      .pipe(takeUntil(this.$unsubscribeTrigger))
-      .subscribe((player: Player) => this.hasWinner(player));
-    this.gameService.$getGameEvent.subscribe(() => this.reset());
+    this.gameService.init(this.$unsubscribeTrigger, this.reset, this.hasWinner);
     this.eventListener.init(this.$unsubscribeTrigger);
   }
   public hasWinner = (win: Player) => {
-    console.log(win);
     if (typeof win === 'string') {
       this.modalNoWins = true;
-      console.log(win);
       return;
     }
     const playerWins = win as Player;
     const userId = this.gameService.id;
     if (playerWins.id === userId) {
       this.modalWins = true;
-      console.log(this.modalWins);
       return;
     }
 
     if (playerWins.id !== userId) {
       this.modalLost = true;
-      console.log(this.modalLost);
     }
   };
 
@@ -64,11 +56,11 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
     this.gameService.movePlayer1(line, column);
   }
 
-  reset() {
+  reset = () => {
     this.modalWins = false;
     this.modalLost = false;
     this.modalNoWins = false;
-  }
+  };
   protected onNewChallenge() {
     this.gameService.newChallenge();
   }
