@@ -36,8 +36,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public void remove(UUID id) {
-
-        sessions.remove(id);
+            sessions.remove(id);
     }
 
 

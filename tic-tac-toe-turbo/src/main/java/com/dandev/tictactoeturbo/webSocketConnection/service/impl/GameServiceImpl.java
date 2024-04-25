@@ -53,7 +53,7 @@ public class GameServiceImpl implements GameService {
 
 
             User userPlayer1 = userOnlineService.get(idPlayer1);
-            User userPlayer2 = userOnlineService.get((idPlayer2));
+            User userPlayer2 = userOnlineService.get(idPlayer2);
 
 
             String iconPlayer = new Random().nextBoolean() ? "X" : "O";
