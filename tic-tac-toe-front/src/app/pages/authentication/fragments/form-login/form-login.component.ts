@@ -2,7 +2,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 import { LoginDto } from 'src/app/dto/login.interface';
 import { Subject, takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/pages/authentication/auth.service';
 import { HttpStatusCode } from '@angular/common/http';
 
 @Component({

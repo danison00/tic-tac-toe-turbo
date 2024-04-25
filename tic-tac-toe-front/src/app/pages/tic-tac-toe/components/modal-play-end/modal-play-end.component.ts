@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { PageHostComponent } from 'src/app/shared/page-host/page-host.component';
+import { PageHostComponent } from 'src/app/pages/host/page-host/page-host.component';
 
 @Component({
   selector: 'app-modal-play-end',

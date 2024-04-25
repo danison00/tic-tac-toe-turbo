@@ -14,7 +14,7 @@ import { CookieServiceService } from 'src/app/utils/cookie-service.service';
 })
 export class PageHostComponent {
   user!: User;
-  private unsubscribeTrigger$ = new Subject<void>();
+  private $unsubscribeTrigger = new Subject<void>();
   private newGameEvent!: Event;
   protected gameRequestUser!: User;
   protected viewModal = false;
@@ -22,21 +22,21 @@ export class PageHostComponent {
   constructor(
     private cookieService: CookieServiceService,
     private socketService: SocketService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.listenEvent();
-    this.socketService.connect();
+    this.handlerEvent();
+    this.socketService.connect(this.$unsubscribeTrigger);
   }
   ngOnDestroy(): void {
-    this.unsubscribeTrigger$.next();
-    this.unsubscribeTrigger$.complete();
+    this.$unsubscribeTrigger.next();
+    this.$unsubscribeTrigger.complete();    
   }
-  protected listenEvent = () => {
+  protected handlerEvent = () => {
     this.socketService
       .listenEvent()
-      .pipe(takeUntil(this.unsubscribeTrigger$))
+      .pipe(takeUntil(this.$unsubscribeTrigger))
       .subscribe((event: Event) => {
         switch (event.type) {
           case EventType.USER_DATA: {
@@ -60,7 +60,7 @@ export class PageHostComponent {
   onGameAccept() {
     this.socketService.sendEvent({
       idSender: this.getId(),
-      idReceiver: this.newGameEvent.idSender,
+      idReceiver: this.newGameEvent.idSender!,
       type: EventType.NEW_GAME_ACCEPT,
     });
   }
@@ -75,7 +75,7 @@ export class PageHostComponent {
   }
 
   getId(): string {
-    return this.cookieService.getValue('user_id');
+    const id = this.cookieService.getValue('user_id');
+    return id ?? '';
   }
-
 }

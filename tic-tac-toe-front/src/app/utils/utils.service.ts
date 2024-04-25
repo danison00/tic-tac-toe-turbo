@@ -20,7 +20,6 @@ export class UtilService {
     );
   }
   getIdGameByUrl(): Observable<string | null> {
-
     return this.activatedRoute.queryParamMap.pipe(
       switchMap((params: ParamMap) => {
         const id = params.get('idGame');
@@ -28,17 +27,5 @@ export class UtilService {
       })
     );
   }
-  getCookie(name: string): string | null {
-    const cookies = document.cookie.split('; '); // Separar a string de cookies em um array
 
-    // Iterar sobre os cookies e encontrar o cookie com o nome especificado
-    for (const cookie of cookies) {
-      const [cookieName, cookieValue] = cookie.split('='); // Separar o nome e o valor do cookie
-
-      if (cookieName === name) {
-        return cookieValue; // Decodificar o valor do cookie e retorná-lo
-      }
-    }
-    return null;
-  }
 }

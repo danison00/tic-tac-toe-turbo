@@ -1,14 +1,9 @@
 import { Router } from '@angular/router';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpStatusCode,
-} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoginDto } from '../dto/login.interface';
-import { UrlDto } from '../dto/auth/UrlDto.interface';
-import { FormLoginComponent } from '../pages/authentication/fragments/form-login/form-login.component';
-import { HttpService } from './http.service';
+import { LoginDto } from '../../dto/login.interface';
+import { UrlDto } from '../../dto/auth/UrlDto.interface';
+import { FormLoginComponent } from './fragments/form-login/form-login.component';
+import { HttpService } from '../../service/http.service';
 
 @Injectable({
   providedIn: 'root',

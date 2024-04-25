@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, of, switchMap, takeUntil } from 'rxjs';
-import { AuthService } from 'src/app/service/auth.service';
+import { AuthService } from 'src/app/pages/authentication/auth.service';
+import { CookieServiceService } from 'src/app/utils/cookie-service.service';
 import { UtilService } from 'src/app/utils/utils.service';
 
 @Component({
@@ -13,16 +14,17 @@ export class AuthenticationComponent implements OnInit, OnDestroy {
   private unsubscribeTrigger = new Subject<void>();
   constructor(
     private authService: AuthService,
-    private util: UtilService,
+    private cookieService: CookieServiceService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    const isAuth = this.util.getCookie('is_auth');
-    if (isAuth) {
+    const isAuth = this.cookieService.getValue('is_auth');
+    if (isAuth != undefined) {
       console.log('autenticado');
       this.router.navigate(['tic-tac-toe', 'home']);
+      return;
     }
 
     this.activatedRoute.queryParams

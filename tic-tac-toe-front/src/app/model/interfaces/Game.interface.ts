@@ -1,7 +1,7 @@
 import { Board } from "../entities/Board";
 import { Player } from "../entities/Player.entity";
 
-export interface GameInterface{
+export interface GameDto{
     id: string;
     firstMove: boolean,
     player1: Player;
@@ -9,4 +9,5 @@ export interface GameInterface{
     playerInit: Player;
     playerCurrent: Player;
     board: string;
+    
 }

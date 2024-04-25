@@ -1,4 +1,4 @@
-import { Observable, map } from 'rxjs';
+import { EMPTY, Observable, map, of, switchMap } from 'rxjs';
 import { Board } from './Board';
 import { Player } from './Player.entity';
 
@@ -35,14 +35,13 @@ export class Game {
     return true;
   }
 
-  public hasWinner(): Observable<Player | string> {
+  public hasWinner(): Observable<Player> {
     return this._board.winner.pipe(
-      map((icon: string) =>{
+      switchMap((icon: string) =>{
+        if(icon == this._player1.iconPlayer ) return of(this._player1);
+        if(icon == this._player2.iconPlayer ) return of(this._player2);
 
-        if(icon == this._player1.iconPlayer ) return this._player1;
-        if(icon == this._player2.iconPlayer ) return this._player2;
-
-        return "none";
+        return EMPTY;
       }
       )
     );

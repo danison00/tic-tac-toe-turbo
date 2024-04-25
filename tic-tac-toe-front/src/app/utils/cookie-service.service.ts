@@ -11,11 +11,7 @@ export class CookieServiceService {
       return { key: c.split('=')[0], value: c.split('=')[1] };
     });
 
-
-    const cookie = cookies.find((cookie) => cookie.key == name)?.value;
-
-    if(cookie) return cookie;
-
-    return "";
+    const cookieValue = cookies.find((cookie) => cookie.key == name)?.value;
+    return cookieValue;
   }
 }

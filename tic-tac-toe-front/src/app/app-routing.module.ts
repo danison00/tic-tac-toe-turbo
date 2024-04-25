@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { TicTacToeComponent } from './pages/tic-tac-toe/tic-tac-toe.component';
 import { PlayersOnlineComponent } from './pages/players-online/players-online.component';
 import { AuthenticationComponent } from './pages/authentication/authentication.component';
-import { PageHostComponent } from './shared/page-host/page-host.component';
+import { PageHostComponent } from './pages/host/page-host/page-host.component';
 import { authGuard } from './security/Auth.guard';
 import { FormLoginComponent } from './pages/authentication/fragments/form-login/form-login.component';
 import { FormRegisterComponent } from './pages/authentication/fragments/form-register/form-register.component';
