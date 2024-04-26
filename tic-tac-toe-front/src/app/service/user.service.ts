@@ -16,7 +16,7 @@ export class UserService {
       switchMap((exist: boolean)=>{
         if (exist) return throwError(() => null);
         return this.httpService.post<HttpStatusCode>(
-          '/user/register',
+          '/public/user/register',
           user
         );
       })
@@ -25,7 +25,7 @@ export class UserService {
 
   verifyUsernameAvailable(username: string) {
     return this.httpService
-      .get<UsernameExists>( '/user/username-exists', { username: username },
+      .get<UsernameExists>( '/public/user/username-exists', { username: username },
       )
       .pipe(
         switchMap((exist: UsernameExists) => {

@@ -1,5 +1,6 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service.impl;
 
+import com.dandev.tictactoeturbo.infra.exceptions.GameNotFound;
 import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
 import com.dandev.tictactoeturbo.webSocketConnection.dtos.EventType;
 import com.dandev.tictactoeturbo.webSocketConnection.dtos.Move;
@@ -35,13 +36,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void getGame(Event event) {
-        UUID uuid = UUID.fromString((String) event.payload());
+    public Game getGame(UUID gameId) {
+        if (!this.games.containsKey(gameId)){
 
-        Game game = games.get(uuid);
-        userOnlineService.sendEvent(event.idSender(), new Event(
-                null, null, game, EventType.GET_GAME
-        ));
+            System.out.println("Game não encontrado(GameController:42)");
+            throw new GameNotFound();
+        }
+        System.out.println("Game encontrado(GameController:45)");
+        return games.get(gameId);
+
     }
 
     @Override
@@ -102,18 +105,20 @@ public class GameServiceImpl implements GameService {
     @Override
     public void makeMove(UUID id, Event event) {
         Move move = (Move) event.payload();
-        System.out.println("move->  "+move.toString());
+        System.out.println("move->  " + move.toString());
 
         Game game = this.games.get(move.idGame());
         if (game == null) throw new RuntimeException("Jogo não encontrado");
-       if(!game.getPlayerCurrent().getId().equals(move.player().getId())){
-           throw new RuntimeException("Não é a sua vez porraaa");
-       }
+        if (!game.getPlayerCurrent().getId().equals(move.player().getId())) {
+            throw new RuntimeException("Não é a sua vez porraaa");
+        }
 
         String[][] board = mapper.deserialize(game.getBoard(), String[][].class);
-        if (!board[move.line()][move.column()].isEmpty()) System.out.println("casa já marcada(GameServiceImpl.java:110)");;
-var n =
-        board[move.line()][move.column()] = move.player().getIconPlayer();
+        if (!board[move.line()][move.column()].isEmpty())
+            System.out.println("casa já marcada(GameServiceImpl.java:110)");
+        ;
+        var n =
+                board[move.line()][move.column()] = move.player().getIconPlayer();
         game.setBoard(mapper.serialize(board));
         game.setPlayerCurrent(game.getPlayerCurrent().equals(game.getPlayer1()) ? game.getPlayer2() : game.getPlayer1());
         System.out.println(game.getBoard());

@@ -22,7 +22,7 @@ export class SocketService {
     if (userId == undefined) return;
 
     this.connection = new WebSocket(
-      'ws://' + environment.domain + '/game?id=' + userId
+      'ws://' + environment.domain + '/gamePlayer?id=' + userId
     );
     this.connection.onmessage = (e) => this.handleEvent(e);
     this.connection.onopen = () => {

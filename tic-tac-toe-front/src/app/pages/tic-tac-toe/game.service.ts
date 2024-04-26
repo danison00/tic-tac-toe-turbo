@@ -47,7 +47,6 @@ export class GameService {
     this.hasWinner = hasWinner;
     this._$unsubscribeTrigger = $unsubscribeTrigger;
     this._id = this.cookieService.getValue('user_id') ?? '';
-    this.getGameById();
   }
 
   public movePlayer1(line: number, column: number) {
@@ -76,14 +75,6 @@ export class GameService {
     );
   }
 
-  public getGameById = () => {
-    this.util.getIdGameByUrl()
-    .pipe(first())
-    .subscribe((idGame: string | null) => {
-      if (idGame) this.senderEvent.getGame(this.id, idGame);
-      while(true){}
-    });
-  };
 
   public handleGetGame(game: GameDto) {
     this.reset();

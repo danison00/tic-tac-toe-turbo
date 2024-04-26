@@ -56,10 +56,6 @@ public class WebSocketEventsHandler extends TextWebSocketHandler {
                 gameService.newGame(event);
                 break;
             }
-            case GET_GAME -> {
-                this.gameService.getGame(event);
-                    break;
-            }
             case MOVE -> {
                 gameService.makeMove(
                         event.idReceiver(),

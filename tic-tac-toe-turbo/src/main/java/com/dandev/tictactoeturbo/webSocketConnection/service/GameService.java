@@ -1,5 +1,6 @@
 package com.dandev.tictactoeturbo.webSocketConnection.service;
 
+import com.dandev.tictactoeturbo.model.entity.Game;
 import com.dandev.tictactoeturbo.webSocketConnection.infra.exceptions.UserNotOnline;
 import com.dandev.tictactoeturbo.webSocketConnection.dtos.Event;
 
@@ -13,5 +14,5 @@ public interface GameService {
 
     public void newGameRequest(UUID id, Event event);
 
-    void getGame(Event event);
+    Game getGame(UUID gameId);
 }

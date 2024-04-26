@@ -1,8 +1,12 @@
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Player } from './../../model/entities/Player.entity';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { EMPTY, Subject, first, of, switchMap, takeUntil } from 'rxjs';
 import { GameService } from './game.service';
 import { GameEventListenerService } from './game-event-listener.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment.dev';
+import { GameDto } from 'src/app/model/interfaces/Game.interface';
 
 @Component({
   selector: 'app-tic-tac-toe',
@@ -17,7 +21,9 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
 
   constructor(
     private gameService: GameService,
-    private eventListener: GameEventListenerService
+    private eventListener: GameEventListenerService,
+    private activatedRoute: ActivatedRoute,
+    private http: HttpClient
   ) {}
 
   ngOnDestroy(): void {
@@ -25,6 +31,12 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
     this.$unsubscribeTrigger.complete();
   }
   ngOnInit(): void {
+    this.getGameById().subscribe({
+      next: (game: GameDto)=>{
+        this.gameService.handleGetGame(game);
+      }
+    })
+
     this.gameService.init(this.$unsubscribeTrigger, this.reset, this.hasWinner);
     this.eventListener.init(this.$unsubscribeTrigger);
   }
@@ -63,5 +75,25 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
   };
   protected onNewChallenge() {
     this.gameService.newChallenge();
+  }
+  private getGameById() {
+    return this.activatedRoute.queryParamMap
+      .pipe(
+        switchMap((params: ParamMap) => {
+          const gameId = params.get('gameId');
+          if (gameId) {
+            return of(gameId);
+          }
+          return EMPTY;
+        })
+      )
+      .pipe(
+        switchMap((gameId: string) => {
+          return this.http.get<GameDto>(environment.baseUrl + '/game', {
+            withCredentials: true,
+            params: { gameId: gameId },
+          });
+        })
+      );
   }
 }

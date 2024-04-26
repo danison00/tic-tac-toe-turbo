@@ -69,7 +69,7 @@ export class PageHostComponent {
     this.router.navigate(['tic-tac-toe', 'game'], {
       queryParams: {
         id: this.getId(),
-        idGame: this.newGameEvent.payload as string,
+        gameId: this.newGameEvent.payload as string,
       },
     });
   }

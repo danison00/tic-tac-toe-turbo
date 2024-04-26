@@ -15,23 +15,23 @@ export class AuthService {
   ) {}
 
   login(login: LoginDto) {
-    return this.httpService.post('/login/basicAuth', login);
+    return this.httpService.post('/public/login/basicAuth', login);
   }
 
   loginOAuth2() {
     this.httpService
-      .get<UrlDto>('/login/OAuth2/url')
+      .get<UrlDto>('/public/login/OAuth2/url')
       .subscribe((urlDto: UrlDto) => {
         window.location.href = urlDto.authUrl;
       });
   }
   logout() {
-    this.httpService.get('/logout').subscribe(() => {
+    this.httpService.get('/public/logout').subscribe(() => {
       this.router.navigate([FormLoginComponent]);
     });
   }
   getCookieAuthenticaton(code: string) {
-    return this.httpService.get('/login/OAuth2/callback', {
+    return this.httpService.get('/public/login/OAuth2/callback', {
       code: code,
     });
   }

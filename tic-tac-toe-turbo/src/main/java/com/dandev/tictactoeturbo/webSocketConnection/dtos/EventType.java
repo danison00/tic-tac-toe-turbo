@@ -12,6 +12,5 @@ public enum EventType implements Serializable {
     USER_NOT_ONLINE,
     GET_USERS_ONLINE,
     NEW_GAME_ACCEPT,
-    GET_GAME
 
 }
