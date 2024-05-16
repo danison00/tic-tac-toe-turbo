@@ -1,0 +1,6 @@
+export enum StatusCode{
+    USERS_ONLINE = "USERS_ONLINE",
+    NEW_CHALLENGE = "NEW_CHALLENGE",
+    NEW_GAME = "NEW_GAME",
+    GET_GAME = "GET_GAME"
+}

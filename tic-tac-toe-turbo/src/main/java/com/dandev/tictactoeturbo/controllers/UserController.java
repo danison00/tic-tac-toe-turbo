@@ -11,13 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/public/user/")
+@RequestMapping("/api/public/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<HttpStatus> register(@RequestBody() NewUserRequest user) {
 
 
@@ -29,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("username-exists")
+    @GetMapping("/username-exists")
     public ResponseEntity<UsernameExistsDto> usernameExists(@RequestParam("username") String username) {
 
         return ResponseEntity.ok(new UsernameExistsDto(this.userService.usernameAlreadyExists(username)));

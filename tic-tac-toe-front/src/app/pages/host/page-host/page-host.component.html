@@ -1,3 +1,3 @@
 <app-header></app-header>
 <router-outlet></router-outlet>
-<app-modal-new-game-request *ngIf="viewModal" [user]="gameRequestUser" (gameAccept)="onGameAccept()" (gameReject)="viewModal = false"></app-modal-new-game-request>
+<app-modal-new-game-request *ngIf="modalNewChallenge" [userChallenger]="userChallenger" (challengeAccept)="onChallengeAccept()" (challengeReject)="modalNewChallenge = false"></app-modal-new-game-request>

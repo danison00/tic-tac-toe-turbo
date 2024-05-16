@@ -6,7 +6,7 @@ import {
   Output,
 } from '@angular/core';
 
-import { User } from 'src/app/model/interfaces/User.interface';
+import { UserView } from 'src/app/model/user-view.interface';
 
 @Component({
   selector: 'app-modal-new-game-request',
@@ -15,26 +15,27 @@ import { User } from 'src/app/model/interfaces/User.interface';
 })
 export class ModalNewGameRequestComponent implements OnInit {
   @Output()
-  gameAccept = new EventEmitter<void>();
+  challengeAccept = new EventEmitter<void>();
   @Output()
-  gameReject = new EventEmitter<void>();
+  challengeReject = new EventEmitter<void>();
 
   protected firstName = '';
   protected lastName = '';
 
   @Input()
-  user!: User;
+  userChallenger!: UserView;
   constructor() {}
 
   ngOnInit(): void {
-    if (this.user) {
+    if (this.userChallenger) {
       try {
-        this.firstName = this.user.name.split(' ')[0];
+        this.firstName = this.userChallenger.name.split(' ')[0];
         this.lastName =
-          this.user.name.split(' ')[this.user.name.split(' ').length - 1];
+          this.userChallenger.name.split(' ')[this.userChallenger.name.split(' ').length - 1];
+          if(this.firstName == this.lastName) this.lastName = ''
       } catch (error) {
         console.log(error);
-        this.firstName = this.user.name;
+        this.firstName = this.userChallenger.name;
       }
     }
   }

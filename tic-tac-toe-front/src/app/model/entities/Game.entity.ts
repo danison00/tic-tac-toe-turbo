@@ -1,51 +1,35 @@
 import { EMPTY, Observable, map, of, switchMap } from 'rxjs';
 import { Board } from './Board';
 import { Player } from './Player.entity';
+import { Move } from '../interfaces/Move.entity';
+import { GamePlayerStatus } from '../enums/game-player-status.enum';
 
 export class Game {
-  private _id: string;
-  private _player1: Player;
-  private _player2: Player;
-  private _board: Board;
-  private _playerCurrent: Player;
-  private _playerInit: Player;
+
 
   constructor(
-    id: string,
-    player1: Player,
-    player2: Player,
-    playerCurrent: Player,
-    playerInit: Player,
-    board: Board
+    private _id: string,
+    private _player1: Player,
+    private _player2: Player,
+    private _playerCurrent: Player,
+    private _status: GamePlayerStatus,
+    private _board: Board
   ) {
-    this._id = id;
-    this._player1 = player1;
-    this._board = board;
-    this._player2 = player2;
-    this._playerCurrent = playerCurrent;
-    this._playerInit = playerInit;
+
   }
 
-  public async makeMove(line: number, column: number, player: Player) {
-    if (this._board.getCell(line, column) !== '') return false;
-    if (!this.playerEquals(this._playerCurrent, player)) return false;
+  public makeMove(move: Move) {
+    if(this._status == GamePlayerStatus.PLAYING || this._status == GamePlayerStatus.NO_TOUCH){
+      if (this._board.getCell(move.line, move.column) !== '' || !this.playerEquals(this._playerCurrent, move.player)) return false;
 
-    this._board.makeMove(line, column, player.iconPlayer);
-    this.tooglePlayer();
-    return true;
+      this._board.makeMove(move.line, move.column, move.player.iconPlayer);
+      this.tooglePlayer();
+      return true;
+    } 
+    return false;
+    
   }
 
-  public hasWinner(): Observable<Player> {
-    return this._board.winner.pipe(
-      switchMap((icon: string) =>{
-        if(icon == this._player1.iconPlayer ) return of(this._player1);
-        if(icon == this._player2.iconPlayer ) return of(this._player2);
-
-        return EMPTY;
-      }
-      )
-    );
-  }
   public tooglePlayer() {
     this._playerCurrent = this.playerEquals(this._playerCurrent, this._player1)
       ? this._player2

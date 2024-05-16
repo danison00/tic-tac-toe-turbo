@@ -1,12 +1,10 @@
+import { GamePlayerStatus } from './../../model/enums/game-player-status.enum';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Player } from './../../model/entities/Player.entity';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EMPTY, Subject, first, of, switchMap, takeUntil } from 'rxjs';
-import { GameService } from './game.service';
-import { GameEventListenerService } from './game-event-listener.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment.dev';
-import { GameDto } from 'src/app/model/interfaces/Game.interface';
+import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
+import { GameDto } from 'src/app/model/interfaces/game-dto.interface';
+import { TicTacToeService } from './tic-tac-toe.service';
+import { CookieServiceService } from 'src/app/utils/cookie-service.service';
 
 @Component({
   selector: 'app-tic-tac-toe',
@@ -20,10 +18,9 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
   private $unsubscribeTrigger = new Subject<void>();
 
   constructor(
-    private gameService: GameService,
-    private eventListener: GameEventListenerService,
     private activatedRoute: ActivatedRoute,
-    private http: HttpClient
+    private service: TicTacToeService,
+    private cookieService: CookieServiceService
   ) {}
 
   ngOnDestroy(): void {
@@ -31,41 +28,18 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
     this.$unsubscribeTrigger.complete();
   }
   ngOnInit(): void {
-    this.getGameById().subscribe({
-      next: (game: GameDto)=>{
-        this.gameService.handleGetGame(game);
-      }
-    })
-
-    this.gameService.init(this.$unsubscribeTrigger, this.reset, this.hasWinner);
-    this.eventListener.init(this.$unsubscribeTrigger);
+    this._getGameById();
   }
-  public hasWinner = (win: Player) => {
-    if (typeof win === 'string') {
-      this.modalNoWins = true;
-      return;
-    }
-    const playerWins = win as Player;
-    const userId = this.gameService.id;
-    if (playerWins.id === userId) {
-      this.modalWins = true;
-      return;
-    }
-
-    if (playerWins.id !== userId) {
-      this.modalLost = true;
-    }
-  };
 
   protected get game() {
-    return this.gameService.game;
+    return this.service.game;
   }
   protected get userId() {
-    return this.gameService.id;
+    return this.service.player.id;
   }
 
   onMakeMove(line: number, column: number) {
-    this.gameService.movePlayer1(line, column);
+    this.service.makeMove(line, column);
   }
 
   reset = () => {
@@ -74,26 +48,40 @@ export class TicTacToeComponent implements OnInit, OnDestroy {
     this.modalNoWins = false;
   };
   protected onNewChallenge() {
-    this.gameService.newChallenge();
+    this.service.newChallenge();
   }
-  private getGameById() {
+  private _getGameById() {
     return this.activatedRoute.queryParamMap
       .pipe(
         switchMap((params: ParamMap) => {
           const gameId = params.get('gameId');
-          if (gameId) {
-            return of(gameId);
-          }
+          if (gameId) return this.service.getGame(gameId);
           return EMPTY;
         })
       )
-      .pipe(
-        switchMap((gameId: string) => {
-          return this.http.get<GameDto>(environment.baseUrl + '/game', {
-            withCredentials: true,
-            params: { gameId: gameId },
-          });
-        })
-      );
+      .pipe(takeUntil(this.$unsubscribeTrigger))
+      .subscribe((game) => {
+          this.checkStatus(game);
+      });
+  }
+
+  private checkStatus(game: GameDto) {
+
+    switch (game.status) {
+
+      case GamePlayerStatus.WIN: {
+        const userId = this.cookieService.getValue("user_id");  
+        if(game.playerWins.id == userId) this.modalWins = true;
+        else this.modalLost = true;
+        break;
+      }
+      case GamePlayerStatus.NO_WINS: {
+        this.modalNoWins = true;
+        break;
+      }
+      case GamePlayerStatus.NO_TOUCH :{
+        this.reset()
+      }
+    }
   }
 }

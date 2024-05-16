@@ -14,8 +14,6 @@ import org.springframework.security.oauth2.server.resource.web.authentication.Be
 import org.springframework.security.web.SecurityFilterChain;
 
 
-import java.io.IOException;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityFilterConfigBean {
@@ -30,8 +28,8 @@ public class SecurityFilterConfigBean {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
+//                    authorize.anyRequest().permitAll();
                     authorize.requestMatchers("/", "tic-tac-toe/**", "api/public/**", "/templates/**", "/js/**", "/css/**", "/assets/**").permitAll()
-//                            .requestMatchers(new RequestMatcherAuthBasic()).permitAll()
                             .anyRequest().authenticated();
 
                 })

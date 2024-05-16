@@ -7,12 +7,12 @@
         <button>Buscar</button>
       </div>
       <div class="list-players">
-        <ul *ngIf="players">
-          <li *ngFor="let player of players">
+        <ul *ngIf="users">
+          <li *ngFor="let player of users">
             <span>{{ player.name }}</span> <button [id]="player.id" (click)="onChallenge($event.target)">Desafiar</button>
           </li>
         </ul>
-        <div *ngIf="players.length == 0" class="box-no-players">
+        <div *ngIf="users.length == 0" class="box-no-players">
           <img src="/assets/img/face-sad.svg" alt="" srcset="" />
           <h4>Nenhum jogador online!</h4>
         </div>

@@ -1,9 +1,7 @@
-import { SocketService } from 'src/app/service/socket.service';
-import { User } from './../../model/interfaces/User.interface';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, Subscription, takeUntil } from 'rxjs';
-import { PageHostComponent } from 'src/app/pages/host/page-host/page-host.component';
-import { PlayersOnlineService } from './service/players-online.service';
+import { Subject, takeUntil } from 'rxjs';
+import { PlayersOnlineService } from './players-online.service';
+import { User } from 'src/app/model/interfaces/user.interface';
 
 @Component({
   selector: 'app-players-online',
@@ -11,32 +9,28 @@ import { PlayersOnlineService } from './service/players-online.service';
   styleUrls: ['./players-online.component.scss'],
 })
 export class PlayersOnlineComponent implements OnInit, OnDestroy {
-  protected players: User[] = [];
+  protected users: User[] = [];
   private $unsubscribeTrigger = new Subject<void>();
-  private u!: Subscription;
   private idUser!: string;
 
-  constructor(private playersService: PlayersOnlineService) {}
+  constructor(
+    private playersOnlineService: PlayersOnlineService,
+  ) {}
   ngOnInit(): void {
-    this.playersService.init(this.$unsubscribeTrigger);
-    this.getPlayers();
+    this.getUsersOnline();
   }
   ngOnDestroy(): void {
     this.$unsubscribeTrigger.next();
     this.$unsubscribeTrigger.complete();
   }
   protected onChallenge(btn: any) {
-    this.playersService.challenge(btn.id as string);
+      this.playersOnlineService.challengePlayer(btn.id as string);
   }
 
-  public getPlayers(): void {
-    this.u = this.playersService
-      .handlerUsersOnline()
+  public getUsersOnline() {
+    this.playersOnlineService
+      .getUsersOnline()
       .pipe(takeUntil(this.$unsubscribeTrigger))
-      .subscribe({
-        next: (players: User[]) => {
-          this.players = players;
-        },
-      });
+      .subscribe((users: User[]) => (this.users = users));
   }
 }

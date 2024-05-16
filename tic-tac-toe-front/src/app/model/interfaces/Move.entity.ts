@@ -1,4 +1,4 @@
-import { PlayerInterface } from './Player.interface';
+import { PlayerInterface } from './player.interface';
 
 export interface Move {
     idGame: string
