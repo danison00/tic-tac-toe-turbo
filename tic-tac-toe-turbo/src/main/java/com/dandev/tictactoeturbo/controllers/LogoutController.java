@@ -1,6 +1,7 @@
 package com.dandev.tictactoeturbo.controllers;
 
 import com.dandev.tictactoeturbo.infra.security.cookies.CookieResolverService;
+import com.dandev.tictactoeturbo.socket.shared.UserOnlineManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class LogoutController {
     @Qualifier("webClientLogout")
     private WebClient webClient;
 
+    @Autowired
+    private UserOnlineManager userOnlineManager;
+
 
     @GetMapping
     public ResponseEntity<HttpStatus> logout(HttpServletResponse response, HttpServletRequest request) {
@@ -38,6 +42,7 @@ public class LogoutController {
 
             Optional<UUID> uuidOpt = cookieService.getId(request);
             cookieService.removeCookies(request, response);
+            uuidOpt.ifPresent((id)-> userOnlineManager.remove(id));
 
         return ResponseEntity.ok().build();
     }

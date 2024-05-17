@@ -22,8 +22,7 @@ export class SocketService {
     this.connection = new WebSocket(
       'ws://' +
         environment.domain +
-        '/socket/connect?userId=' +
-        userId
+        '/socket/connect'
     );
 
     this.connection.onmessage = (e) => {

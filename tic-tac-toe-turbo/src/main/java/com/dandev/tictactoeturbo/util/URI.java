@@ -40,10 +40,19 @@ public class URI implements Serializable {
             }
         }
     }
+    public static URI uri(String uri){
+        return new URI(uri);
+    }
 
     public Optional<String> getParam(String param) {
         if (params.containsKey(param)) return Optional.of(params.get(param));
         return Optional.empty();
+    }
+
+    public void addParam(String key, String value) {
+
+        this.params.put(key, value);
+
     }
 
 

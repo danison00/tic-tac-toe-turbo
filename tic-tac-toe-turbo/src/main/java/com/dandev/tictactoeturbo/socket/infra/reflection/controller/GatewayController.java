@@ -2,11 +2,12 @@ package com.dandev.tictactoeturbo.socket.infra.reflection.controller;
 
 import com.dandev.tictactoeturbo.socket.dtos.Request;
 import com.dandev.tictactoeturbo.socket.infra.classes.Response;
-import com.dandev.tictactoeturbo.socket.infra.enums.ResponseStatusCode;
 import com.dandev.tictactoeturbo.socket.infra.exceptions.ParamNotFound;
+import com.dandev.tictactoeturbo.socket.infra.reflection.ExceptionProcessorAdvice;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.RequestBody;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.RequestParam;
 import com.dandev.tictactoeturbo.socket.infra.reflection.converter.ConverterContainer;
+import com.dandev.tictactoeturbo.socket.infra.reflection.exceptions.ExceptionHandlerNotFound;
 import com.dandev.tictactoeturbo.util.JsonConverter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -30,11 +31,13 @@ public class GatewayController {
     private final ControllersContainerMap controllers;
     private final JsonConverter jsonConverter;
     private final ConverterContainer converters;
+    private final  ExceptionProcessorAdvice exceptionProcessorAdvice;
 
-    public GatewayController(ApplicationContext context, ControllersContainerMap controllersContainerMap, JsonConverter jsonConverter, ConverterContainer converterContainer) {
+    public GatewayController(ApplicationContext context, ControllersContainerMap controllersContainerMap, JsonConverter jsonConverter, ConverterContainer converterContainer, final ExceptionProcessorAdvice exceptionProcessorAdvice) {
         this.controllers = controllersContainerMap;
         this.jsonConverter = jsonConverter;
         this.converters = converterContainer;
+        this.exceptionProcessorAdvice = exceptionProcessorAdvice;
         LOGGER.info("GatewayController initialized");
     }
 
@@ -51,9 +54,23 @@ public class GatewayController {
         Parameter[] parameters = controller.methodMatch.getParameters();
 
         Object[] paramsInstances = getParamsInstancesToController(parameters, request);
-        Object object = executeMethod(controller.instance, controller.methodMatch, paramsInstances);
-        if (object == null) return Optional.empty();
-        return Optional.of(object);
+        try {
+            Object object = controller.methodMatch.invoke(controller.instance, paramsInstances);
+            if (object == null) return Optional.empty();
+            return Optional.of(object);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            System.out.println(e.getCause().toString());
+            Object response = null;
+            try {
+
+                response = exceptionProcessorAdvice.execute(e, request);
+            } catch (ExceptionHandlerNotFound ex) {
+                ex.printStackTrace();
+            }
+            if(response == null) return  Optional.empty();
+           return  Optional.of(response);
+        }
+
 
     }
 
@@ -75,17 +92,12 @@ public class GatewayController {
             } else if (parameter.getAnnotations().length == 0 && parameter.getType().equals(WebSocketSession.class)) {
                 paramInstance = request.body();
             }
+
             params.add(paramInstance);
         }
         return params.toArray();
     }
 
 
-    private Object executeMethod(Object obj, Method method, Object... params) {
-        try {
-            return method.invoke(obj, params);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

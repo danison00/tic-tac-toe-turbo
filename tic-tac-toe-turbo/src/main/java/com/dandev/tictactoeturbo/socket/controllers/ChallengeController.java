@@ -24,13 +24,13 @@ public class ChallengeController {
 
 
     @Post
-    public Response<?> newChallenge(@RequestParam UUID idPlayerSender, @RequestParam UUID idPlayerReceiver) {
+    public Response<?> newChallenge(@RequestParam UUID userId, @RequestParam UUID idPlayerReceiver) {
 
-        Optional<UserOnline> playerSenderOpt = userOnlineManager.getById(idPlayerSender);
+        Optional<UserOnline> playerSenderOpt = userOnlineManager.getById(userId);
 
         return playerSenderOpt.map(userOnline ->
                 Response.idReceiver(idPlayerReceiver)
-                        .idSender(idPlayerSender)
+                        .idSender(userId)
                         .body(
                                 new UserView(userOnline.id(),
                                         userOnline.name()))

@@ -25,7 +25,7 @@ export class PlayersOnlineService {
   public getUsersOnline(): Observable<User[]> {
     const $getUsersRequest = timer(0, 10000).pipe(
       switchMap((number: number) => {
-        this.requestSender.get('/user?userId=' + this._userId);
+        this.requestSender.get('/user');
         return of(number);
       })
     );
@@ -37,6 +37,6 @@ export class PlayersOnlineService {
     return merge($getUsersRequest, $getUsersResponse).pipe(filter((value: any| number)=> typeof(value) !== 'number'))
   }
   public challengePlayer(id: string) {
-    this.requestSender.post(`/challenge?idPlayerSender=${this._userId}&idPlayerReceiver=${id}`);
+    this.requestSender.post(`/challenge?idPlayerReceiver=${id}`);
   }
 }

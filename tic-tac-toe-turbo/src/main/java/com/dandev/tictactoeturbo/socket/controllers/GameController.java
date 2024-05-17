@@ -1,5 +1,6 @@
 package com.dandev.tictactoeturbo.socket.controllers;
 
+import com.dandev.tictactoeturbo.infra.exceptions.GameNotFound;
 import com.dandev.tictactoeturbo.socket.dtos.GameDto;
 import com.dandev.tictactoeturbo.socket.dtos.Move;
 import com.dandev.tictactoeturbo.socket.dtos.UserView;
@@ -31,6 +32,7 @@ public class GameController {
                         .idSender(UUID.randomUUID())
                         .body(new UserView(UUID.randomUUID(), "Danison"))
                         .status(ResponseStatusCode.OK)
+
         );
         responses.add(
                 Response
@@ -44,18 +46,18 @@ public class GameController {
     }
 
     @Post
-    public List<Response<UUID>> newGame(@RequestParam UUID player1Id, @RequestParam UUID player2Id) {
+    public List<Response<UUID>> newGame(@RequestParam UUID userId, @RequestParam UUID player2Id) {
 
-        GameDto gameDto = gameService.newGame(player1Id, player2Id);
+        GameDto gameDto = gameService.newGame(userId, player2Id);
         return List.of(
-                Response.idReceiver(player1Id).body(gameDto.id()).status(ResponseStatusCode.NEW_GAME),
+                Response.idReceiver(userId).body(gameDto.id()).status(ResponseStatusCode.NEW_GAME),
                 Response.idReceiver(player2Id).body(gameDto.id()).status(ResponseStatusCode.NEW_GAME)
         );
 
     }
 
     @Get("/single")
-    public Response<GameDto> getById(@RequestParam UUID userId, @RequestParam UUID gameId) {
+    public Response<GameDto> getById(@RequestParam UUID userId, @RequestParam UUID gameId) throws GameNotFound{
         Optional<GameDto> gameDtoOpt = gameService.getById(gameId);
         return gameDtoOpt.map(gameDto -> Response.idReceiver(userId).body(gameDto).status(ResponseStatusCode.GET_GAME)).orElse(null);
     }

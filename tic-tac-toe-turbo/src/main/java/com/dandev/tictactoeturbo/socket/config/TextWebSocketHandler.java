@@ -2,6 +2,7 @@ package com.dandev.tictactoeturbo.socket.config;
 
 import com.dandev.tictactoeturbo.socket.dtos.Request;
 import com.dandev.tictactoeturbo.socket.infra.exceptions.JsonDeserializerError;
+import com.dandev.tictactoeturbo.socket.infra.exceptions.UserIdNotIndetifier;
 import com.dandev.tictactoeturbo.socket.infra.reflection.controller.GatewayController;
 import com.dandev.tictactoeturbo.socket.shared.ResponseSenderService;
 import com.dandev.tictactoeturbo.util.JsonConverter;
@@ -10,15 +11,15 @@ import com.dandev.tictactoeturbo.util.WebSocketVerb;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.sql.SQLOutput;
+import java.util.*;
+import java.util.logging.SocketHandler;
 
 @Configuration
 public class TextWebSocketHandler extends org.springframework.web.socket.handler.TextWebSocketHandler {
@@ -34,27 +35,75 @@ public class TextWebSocketHandler extends org.springframework.web.socket.handler
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        UUID userId = JsonConverter.getUserIdFromURL(session);
-        gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + userId), WebSocketVerb.POST, session));
+        String idString = this.parseCookies(session, "user_id");
+        if (idString == null) throw new UserIdNotIndetifier();
+
+        try {
+
+            gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.POST, session));
+        } catch (Throwable e) {
+            System.out.println(e);
+        }
     }
 
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws JsonProcessingException {
 
-        Request<?> request = null;
 
-        request = jsonConverter.deserialize(message.getPayload().toString(), Request.class);
-        Optional<Object> responseOpt = gatewayController.handle(request);
-        responseOpt.ifPresent((response) -> responseSenderService.send(response));
+        String idString = this.parseCookies(session, "user_id");
+        if (idString == null) throw new UserIdNotIndetifier();
+        Request<?> request = jsonConverter.deserialize(message.getPayload().toString(), Request.class);
+        try {
+            request.uri().addParam("userId", idString);
+            Optional<Object> responseOpt = gatewayController.handle(request);
+            responseOpt.ifPresent((response) -> responseSenderService.send(response));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        UUID userId = JsonConverter.getUserIdFromURL(session);
+        String idString = this.parseCookies(session, "user_id");
+        if (idString == null) throw new UserIdNotIndetifier();
+        try {
+            gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.DELETE, session));
+            System.out.println("User desconected -> " + idString + "(TextWebSocketHandler.java:59)");
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 
-        gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + userId), WebSocketVerb.DELETE, session));
+    private String parseCookies(WebSocketSession session, String cookieName) {
+        List<String> cookieList = session.getHandshakeHeaders().get("cookie");
+        if (cookieList == null) return null;
+
+        String cookieString = cookieList.get(0);
+        Map<String, String> cookies = new HashMap<>();
+
+        if (cookieString == null || cookieString.isEmpty()) {
+            return null;
+        }
+
+        // Split the string by the semicolon (;) to get individual cookies
+        String[] cookiePairs = cookieString.split(";");
+
+        for (String cookiePair : cookiePairs) {
+            // Split each cookie pair by the equals sign (=)
+            String[] keyValue = cookiePair.split("=", 2);
+
+            if (keyValue.length == 2) {
+                // Trim leading and trailing spaces from the key and value
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim();
+
+                cookies.put(key, value);
+            }
+        }
+
+        return cookies.get(cookieName);
     }
 
 }

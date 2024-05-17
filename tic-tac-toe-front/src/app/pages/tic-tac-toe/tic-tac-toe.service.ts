@@ -68,7 +68,7 @@ const userId = this.cookieServiceService.getValue("user_id");
       player2,
       game.playerCurrent,
       game.status,
-      new Board(JSON.parse(game.board))
+      new Board(game.board)
     );
 
   }

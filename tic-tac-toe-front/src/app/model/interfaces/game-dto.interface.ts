@@ -10,5 +10,5 @@ export interface GameDto {
   playerWins: Player;
   playerCurrent: Player;
   status: GamePlayerStatus;
-  board: string;
+  board: string[][];
 }

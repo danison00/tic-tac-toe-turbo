@@ -1,5 +1,6 @@
 package com.dandev.tictactoeturbo.socket.service;
 
+import com.dandev.tictactoeturbo.infra.exceptions.GameNotFound;
 import com.dandev.tictactoeturbo.socket.dtos.GameDto;
 import com.dandev.tictactoeturbo.socket.dtos.Move;
 
@@ -12,7 +13,7 @@ public interface GameService {
 
     Optional<GameDto> getByPlayers(UUID playerId, UUID player2id);
 
-    Optional<GameDto> getById(UUID gameId);
+    Optional<GameDto> getById(UUID gameId) throws GameNotFound;
 
     GameDto makeMove(Move move);
 }

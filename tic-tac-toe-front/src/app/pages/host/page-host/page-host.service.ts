@@ -11,15 +11,12 @@ import { UserView } from 'src/app/model/user-view.interface';
   providedIn: 'root',
 })
 export class PageHostService {
-  private userId!: string;
 
   constructor(
-    private cookieService: CookieServiceService,
     private requestSender: RequestSenderService,
     private responseListener: ResponseListenerService
   ) {
-    const id = cookieService.getValue('user_id');
-    if (id) this.userId = id;
+  
   }
 
   public getNewChallenge(): Observable<UserView> {
@@ -29,7 +26,7 @@ export class PageHostService {
   }
   public newGame(challengerId: string) {
     this.requestSender.post(
-      `/game?player1Id=${this.userId}&player2Id=${challengerId}`
+      `/game?player2Id=${challengerId}`
     );
   }
   public listenNewGame(): Observable<string>{

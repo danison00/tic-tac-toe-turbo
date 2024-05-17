@@ -39,6 +39,7 @@ public class UserController {
 
     @Delete("/connection")
     public void closeConnection(@RequestParam UUID userId) {
+        System.out.println("Desconectado -> "+userId );
         userOnlineManager.remove(userId);
     }
 
