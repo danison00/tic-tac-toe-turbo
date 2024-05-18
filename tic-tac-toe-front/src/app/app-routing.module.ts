@@ -1,6 +1,7 @@
+import { Game } from 'src/app/model/entities/Game.entity';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TicTacToeComponent } from './pages/tic-tac-toe/tic-tac-toe.component';
+import { GameComponent } from './pages/game/game.component';
 import { PlayersOnlineComponent } from './pages/players-online/players-online.component';
 import { AuthenticationComponent } from './pages/authentication/authentication.component';
 import { PageHostComponent } from './pages/host/page-host/page-host.component';
@@ -20,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'game',
-        component: TicTacToeComponent,
+        component: GameComponent,
         canActivate: [authGuard],
       },
 

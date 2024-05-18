@@ -1,18 +1,14 @@
 package com.dandev.tictactoeturbo.socket.infra.reflection;
 
 import com.dandev.tictactoeturbo.socket.dtos.Request;
-import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.HandlerException;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.WebSocketControllerHandlerException;
 import com.dandev.tictactoeturbo.socket.infra.reflection.exceptions.ExceptionHandlerNotFound;
 import com.dandev.tictactoeturbo.socket.infra.reflection.exceptions.NoWebSocketControllerHandlerExceptionFind;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Logger;
 

@@ -23,7 +23,6 @@ public record GameDto(
 
         PlayerDto player1 = new PlayerDto(idPlayer1, player1name, markerPlayer1);
         PlayerDto player2 = new PlayerDto(idPlayer2, player2name, markerPlayer2);
-
         PlayerDto playerCurrent = new Random().nextBoolean() ? player1 : player2;
 
         String[][] board = {{"", "", ""}, {"", "", ""}, {"", "", ""}};
@@ -81,6 +80,7 @@ public record GameDto(
     public GameDto makeMove(Move move){
 
         GameDto gameDto = null;
+
 
 
         if ((status().equals(GamePlayStatus.PLAYING) || status().equals(GamePlayStatus.NO_TOUCH)) &&   playerCurrent().id().equals(move.player().id())) {
