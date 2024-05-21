@@ -6,6 +6,7 @@ import com.dandev.tictactoeturbo.socket.dtos.Request;
 import com.dandev.tictactoeturbo.socket.enums.ErrorCode;
 import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.socket.infra.enums.ResponseStatusCode;
+import com.dandev.tictactoeturbo.socket.infra.exceptions.MoveNotAllowed;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.HandlerException;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.WebSocketControllerHandlerException;
 
@@ -25,6 +26,20 @@ public class ControllerHandlerAdvice {
                         ));
 
         ErrorMessage errorMessage = new ErrorMessage(ErrorCode.GAME_NOT_FOUND, "O jogo buscado nao foi encontrado!");
+        return Response.idReceiver(id).body(errorMessage).status(ResponseStatusCode.ERROR);
+    }
+
+    @HandlerException(MoveNotAllowed.class)
+    public Response<ErrorMessage> moveNotAllowed(MoveNotAllowed e, Request<?> request) {
+
+        UUID id = UUID.fromString(
+                request.uri()
+                        .getParam("userId")
+                        .orElseThrow(
+                                () -> new RuntimeException("Id nao encontrado como parametro da uri " + request.uri())
+                        ));
+
+        ErrorMessage errorMessage = new ErrorMessage(ErrorCode.MOVE_NOT_ALLOWED, "Aguarde sua vez para jogar!");
         return Response.idReceiver(id).body(errorMessage).status(ResponseStatusCode.ERROR);
     }
 }

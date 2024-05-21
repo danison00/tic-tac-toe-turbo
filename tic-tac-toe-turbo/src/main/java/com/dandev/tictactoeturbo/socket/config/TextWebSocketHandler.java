@@ -1,31 +1,26 @@
 package com.dandev.tictactoeturbo.socket.config;
 
 import com.dandev.tictactoeturbo.socket.dtos.Request;
-import com.dandev.tictactoeturbo.socket.infra.exceptions.JsonDeserializerError;
 import com.dandev.tictactoeturbo.socket.infra.exceptions.UserIdNotIndetifier;
-import com.dandev.tictactoeturbo.socket.infra.reflection.controller.GatewayController;
+import com.dandev.tictactoeturbo.socket.infra.reflection.controller.ControllerProcessor;
 import com.dandev.tictactoeturbo.socket.shared.ResponseSenderService;
 import com.dandev.tictactoeturbo.util.JsonConverter;
 import com.dandev.tictactoeturbo.util.URI;
 import com.dandev.tictactoeturbo.util.WebSocketVerb;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.Cookie;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import java.sql.SQLOutput;
 import java.util.*;
-import java.util.logging.SocketHandler;
 
 @Configuration
 public class TextWebSocketHandler extends org.springframework.web.socket.handler.TextWebSocketHandler {
 
     @Autowired
-    private GatewayController gatewayController;
+    private ControllerProcessor controllerProcessor;
 
     @Autowired
     private ResponseSenderService responseSenderService;
@@ -40,7 +35,7 @@ public class TextWebSocketHandler extends org.springframework.web.socket.handler
 
         try {
 
-            gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.POST, session));
+            controllerProcessor.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.POST, session));
         } catch (Throwable e) {
             System.out.println(e);
         }
@@ -56,7 +51,7 @@ public class TextWebSocketHandler extends org.springframework.web.socket.handler
         Request<?> request = jsonConverter.deserialize(message.getPayload().toString(), Request.class);
         try {
             request.uri().addParam("userId", idString);
-            Optional<Object> responseOpt = gatewayController.handle(request);
+            Optional<Object> responseOpt = controllerProcessor.handle(request);
             responseOpt.ifPresent((response) -> responseSenderService.send(response));
         } catch (Throwable e) {
             e.printStackTrace();
@@ -69,7 +64,7 @@ public class TextWebSocketHandler extends org.springframework.web.socket.handler
         String idString = this.parseCookies(session, "user_id");
         if (idString == null) throw new UserIdNotIndetifier();
         try {
-            gatewayController.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.DELETE, session));
+            controllerProcessor.handle(new Request<>(new URI("/user/connection?userId=" + idString), WebSocketVerb.DELETE, session));
             System.out.println("User desconected -> " + idString + "(TextWebSocketHandler.java:59)");
         } catch (Throwable e) {
             e.printStackTrace();

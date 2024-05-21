@@ -1,6 +1,6 @@
 import { GamePlayerStatus } from '../enums/game-player-status.enum';
 import { Move } from '../interfaces/Move.entity';
-import { PlayerInterface } from './../interfaces/player.interface';
+import { PlayerInterface } from '../interfaces/player.interface';
 import { BoardMain } from './board-main.entity';
 export class GamePlayer {
   public constructor(

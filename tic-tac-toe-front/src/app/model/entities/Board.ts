@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs';
-import { Player } from './Player.entity';
 
 export class Board {
   private board: string[][] = [

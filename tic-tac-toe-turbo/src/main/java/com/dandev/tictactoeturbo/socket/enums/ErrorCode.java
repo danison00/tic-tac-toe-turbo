@@ -1,5 +1,5 @@
 package com.dandev.tictactoeturbo.socket.enums;
 
 public enum ErrorCode {
-    GAME_NOT_FOUND
+    MOVE_NOT_ALLOWED, GAME_NOT_FOUND
 }

@@ -21,6 +21,35 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
+    @Post
+    public List<Response<UUID>> newGame(@RequestParam UUID userId, @RequestParam UUID player2Id) {
+
+        Game gameDto = gameService.newGame(userId, player2Id);
+        return List.of(
+                Response.idReceiver(userId).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME),
+                Response.idReceiver(player2Id).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME)
+        );
+
+    }
+
+    @Get("/single")
+    public Response<Game> getById(@RequestParam UUID userId, @RequestParam UUID gameId) throws GameNotFound {
+        Optional<Game> gameDtoOpt = gameService.getById(gameId);
+        return gameDtoOpt.map(gameDto -> Response.idReceiver(userId)
+                .body(gameDto)
+                .status(ResponseStatusCode.GET_GAME))
+                .orElse(null);
+    }
+
+    @Post("/move")
+    public List<Response<Game>> makeMove(@RequestParam UUID userId, @RequestBody Move move) {
+        Game game = gameService.makeMove(move);
+
+        return List.of(
+                Response.idReceiver(game.getPlayer1().id()).body(game).status(ResponseStatusCode.GET_GAME),
+                Response.idReceiver(game.getPlayer2().id()).body(game).status(ResponseStatusCode.GET_GAME)
+        );
+    }
 
     @Get
     public List<Response<UserView>> getGames(@RequestParam UUID id) {
@@ -43,33 +72,6 @@ public class GameController {
         );
 
         return responses;
-    }
-
-    @Post
-    public List<Response<UUID>> newGame(@RequestParam UUID userId, @RequestParam UUID player2Id) {
-
-        Game gameDto = gameService.newGame(userId, player2Id);
-        return List.of(
-                Response.idReceiver(userId).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME),
-                Response.idReceiver(player2Id).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME)
-        );
-
-    }
-
-    @Get("/single")
-    public Response<Game> getById(@RequestParam UUID userId, @RequestParam UUID gameId) throws GameNotFound{
-        Optional<Game> gameDtoOpt = gameService.getById(gameId);
-        return gameDtoOpt.map(gameDto -> Response.idReceiver(userId).body(gameDto).status(ResponseStatusCode.GET_GAME)).orElse(null);
-    }
-
-    @Post("/move")
-    public List<Response<Game>> makeMove(@RequestParam UUID userId, @RequestBody Move move){
-       Game game = gameService.makeMove(move);
-
-       return List.of(
-               Response.idReceiver(game.getPlayer1().id()).body(game).status(ResponseStatusCode.GET_GAME),
-               Response.idReceiver(game.getPlayer2().id()).body(game).status(ResponseStatusCode.GET_GAME)
-       );
     }
 
 

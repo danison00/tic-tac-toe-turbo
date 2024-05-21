@@ -1,7 +1,6 @@
 package com.dandev.tictactoeturbo.socket.infra.reflection.controller;
 
 import com.dandev.tictactoeturbo.socket.dtos.Request;
-import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.socket.infra.exceptions.ParamNotFound;
 import com.dandev.tictactoeturbo.socket.infra.reflection.ExceptionProcessorAdvice;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.RequestBody;
@@ -16,7 +15,6 @@ import org.springframework.web.socket.WebSocketSession;
 import static com.dandev.tictactoeturbo.socket.infra.reflection.controller.ControllersContainerMap.ControllerWrapper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +22,16 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Component
-public class GatewayController {
+public class ControllerProcessor {
 
-    private final static Logger LOGGER = Logger.getLogger(GatewayController.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(ControllerProcessor.class.getName());
 
     private final ControllersContainerMap controllers;
     private final JsonConverter jsonConverter;
     private final ConverterContainer converters;
     private final  ExceptionProcessorAdvice exceptionProcessorAdvice;
 
-    public GatewayController(ApplicationContext context, ControllersContainerMap controllersContainerMap, JsonConverter jsonConverter, ConverterContainer converterContainer, final ExceptionProcessorAdvice exceptionProcessorAdvice) {
+    public ControllerProcessor(ApplicationContext context, ControllersContainerMap controllersContainerMap, JsonConverter jsonConverter, ConverterContainer converterContainer, final ExceptionProcessorAdvice exceptionProcessorAdvice) {
         this.controllers = controllersContainerMap;
         this.jsonConverter = jsonConverter;
         this.converters = converterContainer;
