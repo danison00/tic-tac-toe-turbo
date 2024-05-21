@@ -1,4 +1,3 @@
-import { Game } from 'src/app/model/entities/Game.entity';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GameComponent } from './pages/game/game.component';

@@ -1,6 +1,6 @@
 package com.dandev.tictactoeturbo.socket.service.implementations;
 
-import com.dandev.tictactoeturbo.socket.dtos.GameDto;
+import com.dandev.tictactoeturbo.socket.dtos.Game;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -12,36 +12,36 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class GamePlayerManager {
 
-    private final Map<KeyGame, GameDto> gameByPlayers = new ConcurrentHashMap<>();
-    private final Map<UUID, GameDto> gamesById = new ConcurrentHashMap<>();
+    private final Map<KeyGame, Game> gameByPlayers = new ConcurrentHashMap<>();
+    private final Map<UUID, Game> gamesById = new ConcurrentHashMap<>();
 
 
-    public void put(GameDto game) {
-        gameByPlayers.put(KeyGame.of(game.player1().id(), game.player2().id()), game);
-        gamesById.put(game.id(), game);
+    public void put(Game game) {
+        gameByPlayers.put(KeyGame.of(game.getPlayer1().id(), game.getPlayer2().id()), game);
+        gamesById.put(game.getId(), game);
     }
 
     public void remove(UUID gameId) {
         var gameDto = gamesById.remove(gameId);
         if(gameDto != null)
-            remove(gameDto.player1().id(), gameDto.player2().id());
+            remove(gameDto.getPlayer1().id(), gameDto.getPlayer2().id());
     }
 
     public void remove(UUID idPlayer1, UUID idPlayer2) {
-        GameDto remove = gameByPlayers.remove(KeyGame.of(idPlayer1, idPlayer2));
+        Game remove = gameByPlayers.remove(KeyGame.of(idPlayer1, idPlayer2));
         if(remove == null)
             gameByPlayers.remove(KeyGame.of(idPlayer2, idPlayer1));
     }
 
-    public Optional<GameDto> get(UUID gameId) {
-        GameDto gameDto = gamesById.get(gameId);
+    public Optional<Game> get(UUID gameId) {
+        Game gameDto = gamesById.get(gameId);
         if(gameDto == null) return Optional.empty();
         return Optional.of(gameDto);
     }
 
-    public Optional<GameDto> get(UUID idPlayer1, UUID idPlayer2) {
+    public Optional<Game> get(UUID idPlayer1, UUID idPlayer2) {
 
-        GameDto gameDto = gameByPlayers.get(KeyGame.of(idPlayer1, idPlayer2));
+        Game gameDto = gameByPlayers.get(KeyGame.of(idPlayer1, idPlayer2));
         if(gameDto == null)
             gameDto = gameByPlayers.get(KeyGame.of(idPlayer2, idPlayer1));
 

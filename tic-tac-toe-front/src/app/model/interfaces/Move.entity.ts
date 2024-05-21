@@ -5,5 +5,6 @@ export interface Move {
     player: PlayerInterface;
     line: number;
     column: number;
-    board?: string[][]
+    lineBoardSecondary: number,
+    columnBoardSecondary: number
   }

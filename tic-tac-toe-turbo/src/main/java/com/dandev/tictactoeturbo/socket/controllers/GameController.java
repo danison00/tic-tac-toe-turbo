@@ -1,7 +1,7 @@
 package com.dandev.tictactoeturbo.socket.controllers;
 
 import com.dandev.tictactoeturbo.infra.exceptions.GameNotFound;
-import com.dandev.tictactoeturbo.socket.dtos.GameDto;
+import com.dandev.tictactoeturbo.socket.dtos.Game;
 import com.dandev.tictactoeturbo.socket.dtos.Move;
 import com.dandev.tictactoeturbo.socket.dtos.UserView;
 import com.dandev.tictactoeturbo.socket.service.GameService;
@@ -48,27 +48,27 @@ public class GameController {
     @Post
     public List<Response<UUID>> newGame(@RequestParam UUID userId, @RequestParam UUID player2Id) {
 
-        GameDto gameDto = gameService.newGame(userId, player2Id);
+        Game gameDto = gameService.newGame(userId, player2Id);
         return List.of(
-                Response.idReceiver(userId).body(gameDto.id()).status(ResponseStatusCode.NEW_GAME),
-                Response.idReceiver(player2Id).body(gameDto.id()).status(ResponseStatusCode.NEW_GAME)
+                Response.idReceiver(userId).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME),
+                Response.idReceiver(player2Id).body(gameDto.getId()).status(ResponseStatusCode.NEW_GAME)
         );
 
     }
 
     @Get("/single")
-    public Response<GameDto> getById(@RequestParam UUID userId, @RequestParam UUID gameId) throws GameNotFound{
-        Optional<GameDto> gameDtoOpt = gameService.getById(gameId);
+    public Response<Game> getById(@RequestParam UUID userId, @RequestParam UUID gameId) throws GameNotFound{
+        Optional<Game> gameDtoOpt = gameService.getById(gameId);
         return gameDtoOpt.map(gameDto -> Response.idReceiver(userId).body(gameDto).status(ResponseStatusCode.GET_GAME)).orElse(null);
     }
 
     @Post("/move")
-    public List<Response<GameDto>> makeMove(@RequestParam UUID userId, @RequestBody Move move){
-       GameDto game = gameService.makeMove(move);
+    public List<Response<Game>> makeMove(@RequestParam UUID userId, @RequestBody Move move){
+       Game game = gameService.makeMove(move);
 
        return List.of(
-               Response.idReceiver(game.player1().id()).body(game).status(ResponseStatusCode.GET_GAME),
-               Response.idReceiver(game.player2().id()).body(game).status(ResponseStatusCode.GET_GAME)
+               Response.idReceiver(game.getPlayer1().id()).body(game).status(ResponseStatusCode.GET_GAME),
+               Response.idReceiver(game.getPlayer2().id()).body(game).status(ResponseStatusCode.GET_GAME)
        );
     }
 

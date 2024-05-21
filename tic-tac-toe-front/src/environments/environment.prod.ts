@@ -1,6 +1,6 @@
 
 export const environment = {
     production: true,
-    host: "/",
-    baseUrl: "/"
+    domain: "localhost:8080/tic-tac-toe",
+    baseUrl: "http://localhost:8080/tic-tac-toe/api"
 }

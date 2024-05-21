@@ -9,7 +9,9 @@ public record Move(
         UUID idGame,
         PlayerDto player,
         int line,
-        int column
+        int column,
+        int lineBoardSecondary,
+        int columnBoardSecondary
 ) implements Serializable {
 
 }

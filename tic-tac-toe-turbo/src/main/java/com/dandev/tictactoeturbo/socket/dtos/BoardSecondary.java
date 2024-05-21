@@ -1,34 +1,30 @@
 package com.dandev.tictactoeturbo.socket.dtos;
 
+import com.dandev.tictactoeturbo.socket.infra.exceptions.MoveNotAllowed;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.ToString;
 
 import static com.dandev.tictactoeturbo.socket.dtos.BoardSecondary.MoveBoardSecondary;
 
 @Getter
-@NoArgsConstructor
+@ToString(callSuper = true)
 public class BoardSecondary extends ABoard<MoveBoardSecondary> {
+    private int yourLine;
+    private int yourColumn;
 
-    private String[][] board = {{"", "", ""}, {"", "", ""}, {"", "", ""}};
+    public BoardSecondary(int yourLine, int yourColumn) {
+        this.yourLine = yourLine;
+        this.yourColumn = yourColumn;
+    }
 
     @Override
     public void makeMove(MoveBoardSecondary move) {
+        if(!board[move.line()][move.column()].isEmpty()) throw new MoveNotAllowed();
         board[move.line()][move.column()] = move.marker();
+
     }
 
-    @Override
-    public boolean isFinish() {
 
-        var b = new ArrayList<ArrayList<String>>();
-        b.add(new ArrayList<>(List.of(board[0])));
-        b.add(new ArrayList<>(List.of(board[1])));
-        b.add(new ArrayList<>(List.of(board[2])));
-
-        return !b.get(0).contains("") && !b.get(1).contains("") && !b.get(2).contains("");
-    }
 
     @Override
     public String getWinner() {
