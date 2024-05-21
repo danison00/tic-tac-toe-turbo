@@ -11,23 +11,14 @@ import java.util.UUID;
 
 public class GameTest {
 
-    UUID idGame = UUID.fromString("e148ef02-0b52-48f9-a233-1b3254bea8cf");
-    PlayerDto dan = new PlayerDto(UUID.randomUUID(), "danison", "X");
 
-    PlayerDto joao = new PlayerDto(UUID.randomUUID(), "joao", "O");
-
-    Game game = new Game(dan.id(), dan.name(), joao.id(), joao.name());
-
-    @Test
-    @Order(1)
     public void initGame() {
 
 //        Assertions.assertNull(game.getPlayerWins());
 //        Assertions.assertEquals(game.getStatus(), GamePlayStatus.NO_TOUCH);
     }
 
-    @Test
-    @Order(2)
+
     public void step1() {
 //
 //        game.makeMove(new Move(idGame, dan, 1, 1, 1, 1));
@@ -413,8 +404,7 @@ public class GameTest {
 
     }
 
-    @Test
-    @Order(2)
+
     public void test2() {
 
 //        game.makeMove(new Move(idGame, dan, 1, 1, 1, 1));
