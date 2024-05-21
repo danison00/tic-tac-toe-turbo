@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/tic-tac-toe")
 public class PageController {
 
 
@@ -15,7 +15,7 @@ public class PageController {
         return "index";
     }
 
-    @GetMapping("tic-tac-toe/**")
+    @GetMapping("**")
     public String endPoint3() {
 
         return "index";
