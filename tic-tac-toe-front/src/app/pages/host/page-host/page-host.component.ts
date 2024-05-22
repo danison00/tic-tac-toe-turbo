@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject, first, takeUntil } from 'rxjs';
+import { Subject, first, switchMap, takeUntil, tap } from 'rxjs';
 import { User } from 'src/app/model/interfaces/user.interface';
 import { CookieServiceService } from 'src/app/utils/cookie-service.service';
 import { PageHostService } from './page-host.service';
@@ -18,13 +18,12 @@ export class PageHostComponent {
   protected userChallenger!: UserView;
   protected modalNewChallenge = false;
 
-  constructor(
-    private cookieService: CookieServiceService,
-    private router: Router,
-    private hostService: PageHostService
-  ) {}
+  constructor(private router: Router, private hostService: PageHostService) {}
 
   ngOnInit(): void {
+    this.hostService
+      .connect()
+      .subscribe();
     this._listener();
   }
   private _listener() {
@@ -48,14 +47,11 @@ export class PageHostComponent {
   }
   ngOnDestroy(): void {
     this.$unsubscribeTrigger.next();
-    this.$unsubscribeTrigger.complete();
+    this.$unsubscribeTrigger.complete();    
   }
 
   onChallengeAccept() {
     this.modalNewChallenge = false;
     this.hostService.newGame(this.userChallenger.id);
   }
-
-  
-
 }

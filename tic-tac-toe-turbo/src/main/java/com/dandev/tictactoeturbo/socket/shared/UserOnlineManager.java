@@ -4,6 +4,7 @@ import com.dandev.tictactoeturbo.socket.dtos.UserView;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -23,7 +24,12 @@ public class UserOnlineManager {
     }
 
     public void remove(UUID id) {
-        users.remove(id);
+
+       var user = users.remove(id);
+        try {
+            user.session.close();
+        } catch (IOException e) {
+        }
 
     }
 

@@ -8,12 +8,15 @@ import { Response } from 'src/app/model/response.interface';
   providedIn: 'root',
 })
 export class ResponseListenerService {
-  constructor(private socket: SocketService) {
-    socket.connect(); 
+  constructor(private socket: SocketService) {}
+
+  public connect() {
+    return this.socket.connect();
   }
 
   listen(statusCode: StatusCode) {
-    return this.socket.listenEvent().pipe(
-      filter(response => response.status == statusCode) );
+    return this.socket
+      .listenEvent()
+      .pipe(filter((response) => response.status == statusCode));
   }
 }

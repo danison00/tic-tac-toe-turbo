@@ -10,35 +10,46 @@ import { Request } from 'src/app/model/request.interface';
 export class SocketService {
   private connection!: WebSocket;
   private $event = new Subject<Response<any>>();
+  private closeConnectionEvent = new Subject<void>();
 
   private constructor(private cookieService: CookieServiceService) {}
-  public connect(): void {
+  public connect() {
     const userId = this.cookieService.getValue('user_id');
-    if (!userId) return;
-
     if (this.connection)
-      if (this.connection.readyState == this.connection.OPEN || this.connection.readyState == this.connection.CONNECTING) return;
+      if (
+        this.connection.readyState == this.connection.OPEN ||
+        this.connection.readyState == this.connection.CONNECTING
+      )
+        return this.closeConnectionEvent;
 
-    this.connection = new WebSocket(
-      'wss://' +
-        environment.domain +
-        '/socket/connect'
-    );
+    this.connection = new WebSocket(environment.urlSocket);
 
     this.connection.onmessage = (e) => {
-
       this.handlerResponse(e);
-    }
+    };
     this.connection.onopen = () => {
-      console.info('Connection wesocket estabilish!');
+      console.info('Connection websocket estabilish!');
     };
     this.connection.onclose = (error) => {
-      console.log(error);
+      if (!error.wasClean) {
+        const interval = setInterval(() => {
+          if (this.connection.OPEN == this.connection.readyState) {
+            clearInterval(interval);
+          } else {
+            this.connect();
+          }
+        }, 3000);
+      }
     };
+
+    this.closeConnectionEvent.subscribe(() => {
+      this.connection.close();
+    });
+
+    return this.closeConnectionEvent;
   }
 
   private handlerResponse(e: MessageEvent) {
-     
     const event: Response<any> = JSON.parse(e.data);
     this.$event.next(event);
   }
@@ -56,8 +67,7 @@ export class SocketService {
       }
     }, 100);
   }
-  listenEvent() {   
-     
+  listenEvent() {
     return this.$event;
   }
 }

@@ -18,6 +18,9 @@ export class PageHostService {
   ) {
   
   }
+  public connect(){
+    return this.responseListener.connect();
+  }
 
   public getNewChallenge(): Observable<UserView> {
     return this.responseListener
