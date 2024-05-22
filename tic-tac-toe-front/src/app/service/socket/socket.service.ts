@@ -20,7 +20,7 @@ export class SocketService {
       if (this.connection.readyState == this.connection.OPEN || this.connection.readyState == this.connection.CONNECTING) return;
 
     this.connection = new WebSocket(
-      'ws://' +
+      'wss://' +
         environment.domain +
         '/socket/connect'
     );
