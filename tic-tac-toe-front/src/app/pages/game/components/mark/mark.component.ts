@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class MarkComponent {
 
   @Input()
-  mark: string = '';
+  mark: string = 'Q';
   @Input()
   size: 'small' | 'big' = 'small';
 

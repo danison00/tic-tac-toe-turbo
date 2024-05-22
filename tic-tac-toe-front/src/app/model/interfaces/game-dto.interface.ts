@@ -1,5 +1,6 @@
 import { BoardMainDto } from "../board-main.dto.interface";
 import { GamePlayerStatus } from "../enums/game-player-status.enum";
+import { Move } from "./Move.entity";
 import { PlayerInterface } from "./player.interface";
 
 
@@ -12,4 +13,5 @@ export interface GameDto {
   status: GamePlayerStatus;
   boardMain: BoardMainDto;
   gameEnd: boolean;
+  lastMove: Move
 }

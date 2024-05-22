@@ -21,40 +21,45 @@ import { GamePlayer } from 'src/app/model/entities/game-player.entity';
 export class BoardSecundaryComponent implements OnDestroy, OnInit {
   @Input() boardSecondary!: BoardSecondary;
   private $trigger = new Subject<void>();
-
   expandBoard = false;
-  isBoardCurrent = false;
+  boardEmphasis = false;
 
   constructor(
     private elementRef: ElementRef,
-    private gameService: TicTacToeService
+    protected gameService: TicTacToeService
   ) {}
   ngOnInit(): void {
     this.gameService.gameChangesEvent
       .pipe(takeUntil(this.$trigger))
-      .subscribe((gamePlayer) => {
+      .subscribe(() => {
         this.checkBoardCurrent();
+        this.expandBoard = false;
       });
     this.checkBoardCurrent();
+    
   }
 
   private checkBoardCurrent() {
+    console.log();
+    
+
+    if(this.gameService.game.boardCurrent == null || this.boardEmphasis == undefined){
+      this.boardEmphasis = true;
+      return;
+    }
+
+
     if (
       this.gameService.game.boardCurrent?.yourLine ==
         this.boardSecondary.yourLine &&
       this.gameService.game.boardCurrent.yourColumn ==
         this.boardSecondary.yourColumn
     ) {
-      if (
-        this.gameService.game.playerCurrent.id ==
-        this.gameService.game.player1.id
-      ) {
-        this.isBoardCurrent = true;
-        this.expandBoard = true;
-      }
-    }else{
-      this.isBoardCurrent = false;
-      this.expandBoard = false
+    
+        this.boardEmphasis = true;
+      
+    } else {
+      this.boardEmphasis = false;
     }
   }
 
@@ -72,9 +77,9 @@ export class BoardSecundaryComponent implements OnDestroy, OnInit {
       this.boardSecondary.yourLine,
       this.boardSecondary.yourColumn
     );
+    
   }
   handleChangeGame(gamePlayer: GamePlayer) {
-    console.log('is board current', this.isBoardCurrent);
 
     if (gamePlayer.boardCurrent == null) return;
 
@@ -82,9 +87,9 @@ export class BoardSecundaryComponent implements OnDestroy, OnInit {
       gamePlayer.boardCurrent.yourLine == this.boardSecondary.yourLine &&
       gamePlayer.boardCurrent.yourColumn == this.boardSecondary.yourColumn
     ) {
-      this.isBoardCurrent = true;
+      this.boardEmphasis = true;
     } else {
-      this.isBoardCurrent = false;
+      this.boardEmphasis = false;
     }
   }
 
@@ -93,5 +98,15 @@ export class BoardSecundaryComponent implements OnDestroy, OnInit {
     if (!this.elementRef.nativeElement.contains(event.target)) {
       this.expandBoard = false;
     }
+  }
+  isLastMove(line: number, column: number): any {
+    const lastMove = this.gameService.game.lastMove;
+    if(!lastMove) return false;
+    return (
+      this.boardSecondary.yourColumn == lastMove.columnBoardSecondary &&
+      this.boardSecondary.yourLine == lastMove.lineBoardSecondary &&
+      lastMove.line == line &&
+      lastMove.column == column
+    );
   }
 }

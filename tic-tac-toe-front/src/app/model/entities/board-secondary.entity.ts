@@ -45,6 +45,7 @@ export class BoardSecondary {
     ) {
       return this.board[0][2];
     }
+    if(!this.board[0].includes('') && !this.board[1].includes('') && !this.board[2].includes('')) return "Q"
 
     return '';
   }

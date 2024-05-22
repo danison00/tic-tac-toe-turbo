@@ -146,11 +146,10 @@ export class TicTacToeService {
       game.playerWins,
       game.status,
       boardMain,
-      game.gameEnd
+      game.gameEnd,
+      game.lastMove
     );  
     
-
-
     return this._game;
   }
 

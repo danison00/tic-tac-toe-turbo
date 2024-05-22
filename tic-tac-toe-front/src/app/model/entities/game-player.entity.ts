@@ -11,7 +11,8 @@ export class GamePlayer {
     private _playerWins: PlayerInterface,
     private _status: GamePlayerStatus,
     private _boardMain: BoardMain,
-    private _gameEnd: boolean
+    private _gameEnd: boolean,
+    private _lastMove: Move
   ) {}
 
   public tooglePlayerCurrent() {
@@ -54,5 +55,8 @@ export class GamePlayer {
   }
   public get boardCurrent() {
     return this.boardMain.boardCurrent;
+  }
+  public get lastMove() {
+    return this._lastMove;
   }
 }

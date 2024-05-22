@@ -21,6 +21,7 @@ public class Game {
     private PlayerDto playerWins;
     private GamePlayStatus status;
     private final BoardMain boardMain;
+    private Move lastMove;
     private boolean gameEnd = false;
 
 
@@ -28,13 +29,9 @@ public class Game {
         this.id = UUID.randomUUID();
         String markerPlayer1 = new Random().nextBoolean() ? "X" : "O";
         String markerPlayer2 = markerPlayer1.equals("X") ? "O" : "X";
-//        this.id = UUID.fromString("e148ef02-0b52-48f9-a233-1b3254bea8cf");
-//        String markerPlayer1 = "X";
-//        String markerPlayer2 = "O";
         this.player1 = new PlayerDto(idPlayer1, player1name, markerPlayer1);
         this.player2 = new PlayerDto(idPlayer2, player2name, markerPlayer2);
         this.playerCurrent = new Random().nextBoolean() ? player1 : player2;
-//        this.playerCurrent = player1;
         this.status = GamePlayStatus.NO_TOUCH;
         this.boardMain = new BoardMain();
     }
@@ -55,6 +52,7 @@ public class Game {
 
         boardMain.makeMove(new MoveBoardMain(move.lineBoardSecondary(), move.columnBoardSecondary(), move.line(), move.column(), move.player().marker()));
         tooglePlayerCurrent();
+        lastMove = move;
 
         if (!boardMain.getWinner().isEmpty()) {
             gameEnd = true;

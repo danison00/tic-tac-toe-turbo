@@ -14,11 +14,9 @@ A partida se dará de seguinte forma:
 
 
 Issues
-- erro na modal quando um player vence uma partida. a board corrente de destaque 
-está sobrepondo o modal de fim de jogo
+
 
 
 Add
-- adicionar indicativo do ultimo movimento do oponente
 - adicionar icone quando nenhum jogador ganhar um subjogo
 - adicionar mecanismo de reconexão no frontend
