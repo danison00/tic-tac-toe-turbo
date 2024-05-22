@@ -29,7 +29,7 @@ public class SecurityFilterConfigBean {
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
 //                    authorize.anyRequest().permitAll();
-                    authorize.requestMatchers("/", "/health", "tic-tac-toe/**", "api/public/**", "/templates/**", "/js/**", "/css/**", "/assets/**").permitAll()
+                    authorize.requestMatchers("/", "/health", "tic-tac-toe/**", "api/public/**", "templates/**", "js/**", "css/**", "assets/**").permitAll()
                             .anyRequest().authenticated();
 
                 })
