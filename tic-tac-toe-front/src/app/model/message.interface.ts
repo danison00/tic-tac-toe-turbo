@@ -1,4 +1,7 @@
 export interface Message{
     payload: string,
-    date: Date
+    dateHour: Date | string,
+    idSender: string,
+    idReceiver: string,
+    type?: 'sent' | 'received'
 }

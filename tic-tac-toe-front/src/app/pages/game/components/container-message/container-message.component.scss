@@ -9,7 +9,10 @@
   display: flex;
   flex-direction: column;
   padding-bottom: 3rem;
-  transition: .3S;
+  transition: 0.3s;
+}
+.alert-new-message {
+  animation: alert-new-message 1s ease-in-out infinite;
 }
 header,
 .body,
@@ -21,6 +24,7 @@ header {
   align-items: baseline;
   justify-content: space-between;
   border-bottom: 1px solid rgb(170, 170, 170);
+  cursor: pointer;
 }
 .arrow-control-message-container {
   cursor: pointer;
@@ -38,7 +42,7 @@ header {
   bottom: -2.4rem;
 }
 .hidden-message-container {
-  bottom: -22.8rem;
+  bottom: -23rem;
 }
 
 @keyframes rotate-arrow {
@@ -55,6 +59,18 @@ header {
   }
   100% {
     transform: rotate(0deg);
+  }
+}
+@keyframes alert-new-message {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(-4%);
+  }
+
+  100% {
+    transform: translateY(0%);
   }
 }
 .body {

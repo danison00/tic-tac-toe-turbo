@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Message } from 'src/app/model/message.interface';
 
 @Component({
   selector: 'message',
@@ -10,7 +11,8 @@ export class MessageComponent {
   @Input()
   type: "sent" | "received" = "sent";
   @Input()
-  date: Date = new Date();
-  @Input()
-  payload: string = "Message content works!";
+  message!: Message;
+  public getDate(){
+    return this.message.dateHour as Date;
+  }
 }

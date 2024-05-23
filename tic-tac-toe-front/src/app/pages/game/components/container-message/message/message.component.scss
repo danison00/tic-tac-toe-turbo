@@ -1,12 +1,11 @@
 
-:host{
+.box-message{
     width: 100%;
     display: flex;
 }
-:host[type = "sent"]{
+.box-message[type='sent']{
     justify-content: flex-end;
 }
-
 
 .message{
     padding: .2rem .6rem;
@@ -16,6 +15,7 @@
     max-width: 80%;
     border-radius: 5px;
     position: relative;
+    align-items: flex-end;
     p{
         font-size: 10px;
     }
@@ -30,8 +30,7 @@
 
 
 .message[type = "sent"]{
-    background-color: rgba(204, 203, 203, 0.745);
-   align-items: flex-end;
+background-color: rgba(204, 203, 203, 0.745);
     
     
 }

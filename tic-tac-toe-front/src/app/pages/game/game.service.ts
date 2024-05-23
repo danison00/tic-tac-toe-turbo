@@ -147,7 +147,8 @@ export class TicTacToeService {
       game.status,
       boardMain,
       game.gameEnd,
-      game.lastMove
+      game.lastMove,
+      game.messages
     );  
     
     return this._game;

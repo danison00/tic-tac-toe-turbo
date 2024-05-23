@@ -1,5 +1,7 @@
 
-<div [attr.type]="type" class="message">
-    <p>{{payload}}</p>
-    <span>{{date.getHours()}}:{{date.getMinutes()}}</span>
+<div class="box-message" [attr.type]="message.type" >
+    <div class="message" [attr.type]="message.type">
+        <p>{{message.payload}}</p>
+        <span>{{getDate().getHours()}}:{{getDate().getMinutes()}}</span>
+    </div>
 </div>

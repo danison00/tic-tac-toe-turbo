@@ -1,6 +1,7 @@
 import { GamePlayerStatus } from '../enums/game-player-status.enum';
 import { Move } from '../interfaces/Move.entity';
 import { PlayerInterface } from '../interfaces/player.interface';
+import { Message } from '../message.interface';
 import { BoardMain } from './board-main.entity';
 export class GamePlayer {
   public constructor(
@@ -12,7 +13,9 @@ export class GamePlayer {
     private _status: GamePlayerStatus,
     private _boardMain: BoardMain,
     private _gameEnd: boolean,
-    private _lastMove: Move
+    private _lastMove: Move,
+    private _messages: Message[]
+
   ) {}
 
   public tooglePlayerCurrent() {
@@ -58,5 +61,8 @@ export class GamePlayer {
   }
   public get lastMove() {
     return this._lastMove;
+  }
+  public get messages(){
+    return this._messages;
   }
 }

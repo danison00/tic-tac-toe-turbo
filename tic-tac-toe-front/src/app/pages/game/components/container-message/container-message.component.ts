@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   OnChanges,
+  OnDestroy,
   OnInit,
   QueryList,
   SimpleChanges,
@@ -10,17 +11,62 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { MessageComponent } from './message/message.component';
+import { MessageService } from '../../message.service';
+import { Subject, take, takeUntil } from 'rxjs';
+import { Message } from 'src/app/model/message.interface';
+import { TicTacToeService } from '../../game.service';
 
 @Component({
   selector: 'container-message',
   templateUrl: './container-message.component.html',
   styleUrls: ['./container-message.component.scss'],
 })
-export class ContainerMessageComponent implements AfterViewInit {
+export class ContainerMessageComponent
+  implements AfterViewInit, OnInit, OnDestroy
+{
   @ViewChild('messageContainer') private messageContainer!: ElementRef;
   @ViewChild('endMessage') private messageElements!: ElementRef;
 
+  protected messages!: Message[];
+
   protected hiddenMessageContainer = true;
+  protected payloadMessage: string = '';
+  protected alertNewMessage = false;
+  private $unsubscribeTrigger = new Subject<void>();
+  constructor(private messageService: MessageService, protected gameService: TicTacToeService) {}
+
+  sendMessage() {
+    if (this.payloadMessage.trim() == '') return;
+    const message = this.messageService.sendMessage(this.payloadMessage);
+    this.messages.push(message);
+    console.log(this.messages);
+    this.payloadMessage = '';
+    this.scrollMessage();
+  }
+  onKeyDown($event: KeyboardEvent) {
+    if ($event.key == 'Enter') {
+      this.sendMessage();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.$unsubscribeTrigger.next();
+    this.$unsubscribeTrigger.complete();
+  }
+  ngOnInit(): void {
+    this.messages = this.messageService.getAll();
+    this.messageService
+      .listenMessages()
+      .pipe(takeUntil(this.$unsubscribeTrigger))
+      .subscribe((message) => {
+        this.messages.push(message);
+        if(this.hiddenMessageContainer){
+          this.alertNewMessage = true;
+        }
+        this.scrollMessage();
+      });
+  }
+
   resizeTextArea(inputMessage: HTMLTextAreaElement) {
     inputMessage.style.height = 'auto';
     inputMessage.style.height =
@@ -30,15 +76,18 @@ export class ContainerMessageComponent implements AfterViewInit {
       ) + 'px';
   }
 
-  ngAfterViewInit(): void {
-    const container = this.messageContainer.nativeElement as HTMLElement;
-    const lastMessage = this.messageElements.nativeElement as HTMLElement;
-    container.scrollTop = lastMessage.offsetTop;
-  }
+  ngAfterViewInit(): void {}
   toogleMessageContainer() {
+    this.alertNewMessage = false;
     this.hiddenMessageContainer = !this.hiddenMessageContainer;
-    const container = this.messageContainer.nativeElement as HTMLElement;
-    const lastMessage = this.messageElements.nativeElement as HTMLElement;
-    container.scrollTop = lastMessage.offsetTop;
+    this.scrollMessage();
+  }
+  public scrollMessage() {
+    setTimeout(() => {
+      const container = this.messageContainer.nativeElement as HTMLElement;
+      const lastMessage = this.messageElements.nativeElement as HTMLElement;
+      container.scroll({ behavior: 'auto' });
+      container.scrollTop = lastMessage.offsetTop;
+    }, 1);
   }
 }

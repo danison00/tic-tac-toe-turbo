@@ -23,6 +23,7 @@ public class Game {
     private final BoardMain boardMain;
     private Move lastMove;
     private boolean gameEnd = false;
+    private List<Message> messages = new ArrayList<>();
 
 
     public Game(UUID idPlayer1, String player1name, UUID idPlayer2, String player2name) {
