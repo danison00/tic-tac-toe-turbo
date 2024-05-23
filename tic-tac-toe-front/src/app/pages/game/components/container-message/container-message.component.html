@@ -1,0 +1,92 @@
+<section
+  [ngClass]="{
+    'hidden-message-container': hiddenMessageContainer,
+    'view-message-container': !hiddenMessageContainer
+  }"
+  class="message-container"
+ 
+>
+  <header>
+    <div style="display: flex; align-items: center; gap: 0.5rem">
+      <div>Danison</div>
+      <div
+        style="
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: rgb(74, 204, 74);
+        "
+      ></div>
+    </div>
+    <span
+      [ngClass]="{
+        rotate: hiddenMessageContainer,
+        'rotate-reverse': !hiddenMessageContainer
+      }"
+      class="arrow-control-message-container rotate"
+      (click)="toogleMessageContainer()"
+    >
+      <svg
+        style="width: 20px; height: 12px"
+        width="146"
+        height="59"
+        viewBox="0 0 146 59"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M40.2474 24.9692C40.2474 24.9692 35.627 28.1595 33.8643 29.3765C32.1017 30.5935 36.4895 27.5639 33.8643 29.3765L4.81671 49.8558C2.97911 51.8078 4.81671 53.8402 4.81671 53.8402C4.81671 53.8402 6.8444 55.6434 9.00769 54.753L40.2474 33.7838C46.6304 29.3765 51 26.5 51 26.5L75.678 9.32004C77.4407 8.10301 77.4407 6.1298 75.678 4.91277C73.9154 3.69575 71.0576 3.69573 69.295 4.91277L40.2474 24.9692Z"
+          fill="#707070"
+        />
+        <path
+          d="M33.8643 29.3765C35.627 28.1595 40.2474 24.9692 40.2474 24.9692L69.295 4.91277C71.0576 3.69573 73.9154 3.69575 75.678 4.91277C77.4407 6.1298 77.4407 8.10301 75.678 9.32004L51 26.5C51 26.5 46.6304 29.3765 40.2474 33.7838L9.00769 54.753C6.8444 55.6434 4.81671 53.8402 4.81671 53.8402C4.81671 53.8402 2.97911 51.8078 4.81671 49.8558L33.8643 29.3765ZM33.8643 29.3765C36.4895 27.5639 32.1017 30.5935 33.8643 29.3765Z"
+          stroke="#707070"
+          stroke-width="8"
+          stroke-linecap="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M99.2239 29.0761C99.2239 29.0761 103.799 32.2458 105.544 33.455C107.289 34.6642 102.945 31.654 105.544 33.455L136 54.4264C138.5 55.7535 140.5 53.9841 140.5 53.9841C142 53.0994 142 50.8878 140.796 49.2778L113 30L105.714 24.9715L76.9524 5.04407C75.2071 3.83487 72.3394 3.77346 70.5471 4.90691C68.7548 6.04037 68.7167 7.93946 70.462 9.14867L99.2239 29.0761Z"
+          fill="#707070"
+        />
+        <path
+          d="M105.544 33.455C103.799 32.2458 99.2239 29.0761 99.2239 29.0761L70.462 9.14867C68.7167 7.93946 68.7548 6.04037 70.5471 4.90691C72.3394 3.77346 75.2071 3.83487 76.9524 5.04407L105.714 24.9715L113 30L140.796 49.2778C142 50.8878 142 53.0994 140.5 53.9841C140.5 53.9841 138.5 55.7535 136 54.4264L105.544 33.455ZM105.544 33.455C102.945 31.654 107.289 34.6642 105.544 33.455Z"
+          stroke="#707070"
+          stroke-width="8"
+          stroke-linecap="round"
+        />
+      </svg>
+    </span>
+  </header>
+  <div class="body"  #messageContainer>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <message type="sent"></message>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <message type="sent"></message>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <message type="sent"></message>
+    <message type="received"></message>
+    <div #endMessage class="end" ></div>
+  </div>
+  <div class="sender-message-box">
+    <textarea
+      #inputMessage
+      placeholder="Mensagem"
+      spellcheck="false"
+      type="text"
+      (input)="resizeTextArea(inputMessage)"
+    >
+    </textarea>
+    <button>enviar</button>
+  </div>
+</section>
