@@ -25,10 +25,12 @@ public class UserOnlineManager {
 
     public void remove(UUID id) {
 
-       var user = users.remove(id);
-        try {
-            user.session.close();
-        } catch (IOException e) {
+        var user = users.remove(id);
+        if (user != null) {
+            try {
+                user.session.close();
+            } catch (IOException e) {
+            }
         }
 
     }

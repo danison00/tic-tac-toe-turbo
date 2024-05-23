@@ -17,6 +17,8 @@ import { FormRegisterComponent } from './pages/authentication/fragments/form-reg
 import { ModalAccountRegisterSuccessfulComponent } from './pages/authentication/fragments/modal-account-register-successful/modal-account-register-successful.component';
 import { BoardMainComponent } from './pages/game/components/board-main/board-main.component';
 import { BoardSecundaryComponent } from './pages/game/components/board-secundary/board-secundary.component';
+import { ContainerMessageComponent } from './pages/game/components/container-message/container-message.component';
+import { MessageComponent } from './pages/game/components/container-message/message/message.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { BoardSecundaryComponent } from './pages/game/components/board-secundary
     ModalAccountRegisterSuccessfulComponent,
     BoardMainComponent,
     BoardSecundaryComponent,
+    ContainerMessageComponent,
+    MessageComponent,
     
   ],
   imports: [

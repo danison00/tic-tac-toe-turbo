@@ -8,13 +8,14 @@
   scroll-behavior: smooth;
 
 }
-p, h1, h2, h3, h4, h5, h6, li,span, input{
+p, h1, h2, h3, h4, h5, h6, li,span, input, div{
   color: #424242;
 }
 body{
   width: 100dvw;
   height: 100dvh;
   background-color: #E5E5E5;
+  overflow: hidden;
 }
 .filter-blur {
   width: 100%;

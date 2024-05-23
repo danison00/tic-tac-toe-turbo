@@ -31,14 +31,18 @@ export class SocketService {
       console.info('Connection websocket estabilish!');
     };
     this.connection.onclose = (error) => {
+      console.log(error);
       if (!error.wasClean) {
         const interval = setInterval(() => {
-          if (this.connection.OPEN == this.connection.readyState) {
+          if (
+            this.connection.OPEN == this.connection.readyState ||
+            this.connection.CONNECTING == this.connection.readyState
+          ) {
             clearInterval(interval);
           } else {
             this.connect();
           }
-        }, 3000);
+        }, 4000);
       }
     };
 

@@ -30,6 +30,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this._getGameById();
+      
   }
   
 

@@ -1,13 +1,13 @@
 <main *ngIf="game">
-  <h3 style="display: flex; align-items: center; gap: 1rem">
+  <h4 style="display: flex; align-items: center; gap: 1rem">
     Seu marcador é
     <app-mark size="small" [mark]="game.player1.marker"></app-mark>
-  </h3>
+  </h4>
 
   <board-main [gamePlayer]="game"></board-main>
 
   <div *ngIf="!modalLost && !modalWins" style="position: relative">
-    <h3
+    <h4
       *ngIf="game"
       [ngClass]="{
         'view-animation': game.playerCurrent.id == userId,
@@ -15,8 +15,8 @@
       }"
     >
       Sua vez! ▶️
-    </h3>
-    <h3
+    </h4>
+    <h4
       *ngIf="game"
       [ngClass]="{
         'hidden-animation': game.playerCurrent.id == userId,
@@ -24,8 +24,12 @@
       }"
     >
       Aguarde sua vez! <span class="wait">⏳</span>
-    </h3>
+    </h4>
   </div>
+  <div>
+    <button>Desistir</button>
+  </div>
+  <container-message></container-message>
 </main>
 <app-modal-play-end
   (eventChalleng)="onNewChallenge()"
