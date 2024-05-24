@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ResponseStatusCode {
-    OK( "OK"),
+    OK("OK"),
     CREATED("Created"),
     ACCEPTED("Accepted"),
     NO_CONTENT("No Content"),
@@ -18,7 +18,7 @@ public enum ResponseStatusCode {
     SERVICE_UNAVAILABLE("Service Unavailable"),
 
 
-//    MOVE,
+    //    MOVE,
 //    SIMPLE_MESSAGE,
 //    NEW_GAME_REQUEST,
 //    USER_DATA,
@@ -26,15 +26,21 @@ public enum ResponseStatusCode {
 //    CONNECTION_CLOSE,
 //    PLAYER_WINS,
 //    USER_NOT_ONLINE,
-    USERS_ONLINE( "USERS_ONLINE"),
+    USERS_ONLINE("USERS_ONLINE"),
     NEW_CHALLENGE("NEW_CHALLENGE"),
-    NEW_GAME("NEW_GAME"), GET_GAME("GET_GAME"), ERROR("ERROR"), NEW_MESSAGE("NEW_MESSAGE"), ALL_MESSAGES("ALL_MESSAGES");
+    NEW_GAME("NEW_GAME"),
+    GET_GAME("GET_GAME"),
+    ERROR("ERROR"),
+    NEW_MESSAGE("NEW_MESSAGE"),
+    ALL_MESSAGES("ALL_MESSAGES"),
+    USER_CONNECTED("USER_CONNECTED"),
+    USER_DESCONNECTED("USER_DESCONNECTED");
 //    NEW_GAME_ACCEPT,
 //    GET_GAME
 
     private final String message;
 
-    ResponseStatusCode( String message) {
+    ResponseStatusCode(String message) {
         this.message = message;
     }
 

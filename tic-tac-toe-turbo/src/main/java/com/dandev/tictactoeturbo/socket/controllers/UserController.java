@@ -4,9 +4,7 @@ import com.dandev.tictactoeturbo.model.entity.User;
 import com.dandev.tictactoeturbo.service.UserService;
 import com.dandev.tictactoeturbo.socket.dtos.UserView;
 import com.dandev.tictactoeturbo.socket.infra.classes.Response;
-import com.dandev.tictactoeturbo.socket.infra.enums.ResponseStatusCode;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.*;
-import com.dandev.tictactoeturbo.socket.service.GameService;
 import com.dandev.tictactoeturbo.socket.shared.UserOnlineManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
@@ -25,7 +23,8 @@ public class UserController {
 
     @Get
     public Response<List<UserView>> allUsersOnline(@RequestParam UUID userId){
-        return Response.idReceiver(userId).body(userOnlineManager.getAll().stream().filter((userview)->!userview.id().equals(userId)).toList()).status(ResponseStatusCode.USERS_ONLINE);
+//        return Response.idReceiver(userId).body(userOnlineManager.getAll().stream().filter((userview)->!userview.id().equals(userId)).toList()).status(ResponseStatusCode.USERS_ONLINE);
+    return null;
     }
 
 
@@ -42,6 +41,7 @@ public class UserController {
     public void closeConnection(@RequestParam UUID userId) {
         System.out.println("Desconectado -> "+userId );
         userOnlineManager.remove(userId);
+
     }
 
 

@@ -11,6 +11,18 @@
   padding-bottom: 3rem;
   transition: 0.3s;
 }
+.user-online{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: rgb(74, 204, 74);
+}
+.user-offline{
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: rgb(204, 60, 60);
+}
 .alert-new-message {
   animation: alert-new-message 1s ease-in-out infinite;
 }

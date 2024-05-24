@@ -11,4 +11,5 @@ public class UserNotOnline extends WebSocketExceptionAbstract {
     public UserNotOnline(String message) {
         super(message);
     }
+    public UserNotOnline(){super("User not Online");}
 }

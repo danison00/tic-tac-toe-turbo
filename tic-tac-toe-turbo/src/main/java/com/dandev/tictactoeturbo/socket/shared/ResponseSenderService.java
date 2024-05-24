@@ -4,7 +4,9 @@ import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.util.JsonConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
+
 import java.io.IOException;
+import java.nio.channels.ClosedChannelException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,10 +30,11 @@ public class ResponseSenderService {
 
         String eventSerialized = jsonConverter.serialize(response);
         try {
-            userOnlineOpt.get().session().sendMessage(new TextMessage(eventSerialized));
+            if (userOnlineOpt.get().session().isOpen())
+                userOnlineOpt.get().session().sendMessage(new TextMessage(eventSerialized));
             System.out.println("Event sent -> " + response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException  e) {
+            System.out.println("Exception "+e.getCause()+"(ResponseSenderService.java:36)");
         }
     }
 

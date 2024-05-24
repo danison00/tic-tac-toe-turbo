@@ -22,6 +22,7 @@ export class PlayersOnlineComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.$unsubscribeTrigger.next();
     this.$unsubscribeTrigger.complete();
+    this.playersOnlineService.complete();
   }
   protected onChallenge(btn: any) {
       this.playersOnlineService.challengePlayer(btn.id as string);

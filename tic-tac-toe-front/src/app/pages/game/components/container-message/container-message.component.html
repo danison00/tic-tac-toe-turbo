@@ -10,12 +10,7 @@
     <div style="display: flex; align-items: center; gap: 0.5rem">
       <div>{{ gameService.game.player2.name.split(" ")[0] }}</div>
       <div
-        style="
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background-color: rgb(74, 204, 74);
-        "
+       [ngClass]="{'user-online': isUserOnline, 'user-offline': !isUserOnline}"
       ></div>
     </div>
     <span

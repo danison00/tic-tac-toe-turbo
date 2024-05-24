@@ -11,7 +11,6 @@ import { CookieServiceService } from 'src/app/utils/cookie-service.service';
   providedIn: 'root',
 })
 export class PlayersOnlineService {
- 
   private _userId: string | undefined;
 
   constructor(
@@ -23,19 +22,30 @@ export class PlayersOnlineService {
   }
 
   public getUsersOnline(): Observable<User[]> {
-    const $getUsersRequest = timer(0, 10000).pipe(
-      switchMap((number: number) => {
-        this.requestSender.get('/user');
-        return of(number);
+    this.requestSender.get('/topic/users-online');
+
+    return this.responseListener.listen(StatusCode.USERS_ONLINE).pipe(
+      map((response) => {
+        const users = response.body as User[];
+        const userId = this.cookieServive.getValue('user_id');
+        return users.filter((user) => user.id != userId);
       })
     );
+    // const $getUsersRequest = timer(0, 10000).pipe(
+    //   switchMap((number: number) => {
+    //     this.requestSender.get('/user');
+    //     return of(number);
+    //   })
+    // );
 
-    const $getUsersResponse = this.responseListener
-      .listen(StatusCode.USERS_ONLINE)
-      .pipe(map((response: Response<any>) => response.body as User[]));
+    // const $getUsersResponse = this.responseListener
+    //   .listen(StatusCode.USERS_ONLINE)
+    //   .pipe(map((response: Response<any>) => response.body as User[]));
 
-    return merge($getUsersRequest, $getUsersResponse).pipe(filter((value: any| number)=> typeof(value) !== 'number'))
+    // return merge($getUsersRequest, $getUsersResponse).pipe(filter((value: any| number)=> typeof(value) !== 'number'))
   }
+
+  complete() {}
   public challengePlayer(id: string) {
     this.requestSender.post(`/challenge?idPlayerReceiver=${id}`);
   }

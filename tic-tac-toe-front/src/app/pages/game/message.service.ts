@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { map, merge, tap } from 'rxjs';
 import { Message } from './../../model/message.interface';
 import { Injectable } from '@angular/core';
 import { StatusCode } from 'src/app/model/enums/status-code.enum';
@@ -11,7 +11,6 @@ import { CookieServiceService } from 'src/app/utils/cookie-service.service';
   providedIn: 'root',
 })
 export class MessageService {
-
   constructor(
     private listener: ResponseListenerService,
     private request: RequestSenderService,
@@ -30,7 +29,10 @@ export class MessageService {
       payload: payload,
     };
 
-    this.request.post<Message>('/message?gameId='+this.gameService.game.id, message);
+    this.request.post<Message>(
+      '/message?gameId=' + this.gameService.game.id,
+      message
+    );
     message.type = 'sent';
     message.dateHour = date;
     return message;
@@ -46,16 +48,31 @@ export class MessageService {
     );
   }
   public getAll() {
-   const messages = this.gameService.game.messages;
-   const userId = this.cookieService.getValue("user_id");
-   messages.forEach((message)=>{
-    message.dateHour = new Date(message.dateHour);
-    if(message.idSender == userId){
-      message.type = "sent";
-    }else{
-      message.type = "received";
-    }
-   })
-    return messages; 
+    const messages = this.gameService.game.messages;
+    const userId = this.cookieService.getValue('user_id');
+    messages.forEach((message) => {
+      message.dateHour = new Date(message.dateHour);
+      if (message.idSender == userId) {
+        message.type = 'sent';
+      } else {
+        message.type = 'received';
+      }
+    });
+    return messages;
+  }
+  public isUserOnline() {
+    this.request.get(
+      '/topic/single/user?userIdObservable=' + this.gameService.game.player2.id
+    );
+    const $userConnected = this.listener.listen(StatusCode.USER_CONNECTED).pipe(
+      map(() => true)
+    );
+    const $desconnected = this.listener
+      .listen(StatusCode.USER_DESCONNECTED)
+      .pipe(
+        map(() => false)
+      );
+
+    return merge($userConnected, $desconnected);
   }
 }

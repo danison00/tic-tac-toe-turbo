@@ -32,8 +32,12 @@ export class ContainerMessageComponent
   protected hiddenMessageContainer = true;
   protected payloadMessage: string = '';
   protected alertNewMessage = false;
+  protected isUserOnline = false;
   private $unsubscribeTrigger = new Subject<void>();
-  constructor(private messageService: MessageService, protected gameService: TicTacToeService) {}
+  constructor(
+    private messageService: MessageService,
+    protected gameService: TicTacToeService
+  ) {}
 
   sendMessage() {
     if (this.payloadMessage.trim() == '') return;
@@ -60,10 +64,17 @@ export class ContainerMessageComponent
       .pipe(takeUntil(this.$unsubscribeTrigger))
       .subscribe((message) => {
         this.messages.push(message);
-        if(this.hiddenMessageContainer){
+        if (this.hiddenMessageContainer) {
           this.alertNewMessage = true;
         }
         this.scrollMessage();
+      });
+
+    this.messageService
+      .isUserOnline()
+      .pipe(takeUntil(this.$unsubscribeTrigger))
+      .subscribe((is) => {
+        this.isUserOnline = is;
       });
   }
 
