@@ -18,5 +18,7 @@ Issues
 
 
 Add
-- adicionar icone quando nenhum jogador ganhar um subjogo
-- adicionar mecanismo de reconexão no frontend
+- adicionar mecanismo ping pong
+- adicionar funcionalidade de desistir do jogo
+- se um player desafiar outro e eles já terem um jogo em andamento, ele deve ser redirecionado
+    para o jogo

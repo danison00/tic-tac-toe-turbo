@@ -3,6 +3,7 @@ package com.dandev.tictactoeturbo.socket.controllers;
 import com.dandev.tictactoeturbo.socket.dtos.UserView;
 import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.socket.infra.enums.ResponseStatusCode;
+import com.dandev.tictactoeturbo.socket.infra.enums.UserOnlineStatus;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.Get;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.RequestParam;
 import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.WebSocketController;
@@ -30,15 +31,15 @@ public class SingleUserTopic {
     public SingleUserTopic(UserOnlineManager userOnlineManager) {
 
         this.userOnlineManager = userOnlineManager;
-        this.userOnlineManager.observerAll().subscribe((usersOnline) -> {
+        this.userOnlineManager.observerSingleUser(userOnline -> {
             subscriptions.forEach((userObserver, userIdObservable) -> {
 
                 if(!userObserver.session().isOpen()){
                     subscriptions.remove(userObserver);
                     return;
                 }
-                Optional<UserView> userViewOpt = usersOnline.stream().filter(userView -> userView.id().equals(userIdObservable)).findFirst();
-                if (userViewOpt.isPresent()) {
+                if (userOnline.status().equals(UserOnlineStatus.ONLINE)) {
+
                     responseService.send(Response.idReceiver(userObserver.id()).body("").status(ResponseStatusCode.USER_CONNECTED));
                 }else {
                     responseService.send(Response.idReceiver(userObserver.id()).body("").status(ResponseStatusCode.USER_DESCONNECTED));

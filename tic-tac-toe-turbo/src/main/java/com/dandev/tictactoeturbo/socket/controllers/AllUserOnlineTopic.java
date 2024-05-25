@@ -28,10 +28,13 @@ public class AllUserOnlineTopic {
     public AllUserOnlineTopic(UserOnlineManager userOnlineManager) {
 
         this.userOnlineManager = userOnlineManager;
-        this.userOnlineManager.observerAll().subscribe((usersOnline) -> {
+        this.userOnlineManager.observerUsersOnline((usersOnline) -> {
             subscriptions.forEach((uuid, userOnline) -> {
                 if (userOnline.session().isOpen()) {
-                    responseService.send(Response.idReceiver(uuid).body(usersOnline).status(ResponseStatusCode.USERS_ONLINE));
+                    responseService.send(
+                            Response.idReceiver(uuid)
+                                    .body(usersOnline.stream().map(userOn -> new UserView(userOnline.id(), userOnline.name())))
+                                    .status(ResponseStatusCode.USERS_ONLINE));
                 } else {
                     subscriptions.remove(uuid);
                 }
@@ -45,7 +48,6 @@ public class AllUserOnlineTopic {
         Optional<UserOnline> userOnlineOpt = userOnlineManager.getById(userId);
 
         if (userOnlineOpt.isEmpty()) {
-            System.out.println("usuario empt");
             return null;
         }
 
