@@ -55,6 +55,10 @@ header {
 }
 .hidden-message-container {
   bottom: -23rem;
+  width: 10rem;
+}
+.opacity-0{
+  opacity: 0;
 }
 
 @keyframes rotate-arrow {

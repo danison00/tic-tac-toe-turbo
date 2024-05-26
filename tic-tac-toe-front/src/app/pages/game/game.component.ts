@@ -1,6 +1,6 @@
 import { GamePlayerStatus } from './../../model/enums/game-player-status.enum';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { EMPTY, Subject, switchMap, takeUntil } from 'rxjs';
 import { GameDto } from 'src/app/model/interfaces/game-dto.interface';
 import { TicTacToeService } from './game.service';
@@ -16,12 +16,14 @@ export class GameComponent implements OnInit, OnDestroy {
   protected modalWins = false;
   protected modalLost = false;
   protected modalNoWins = false;
+  protected toolHost = false;
   private $unsubscribeTrigger = new Subject<void>();
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private service: TicTacToeService,
-    private cookieService: CookieServiceService
+    private cookieService: CookieServiceService,
+    private ref: ElementRef
   ) {}
 
   ngOnDestroy(): void {

@@ -33,13 +33,13 @@ public class UserController {
         Optional<User> userOpt = userService.findById(userId);
         userOpt.ifPresent(user -> {
             userOnlineManager.put(user.getId(), user.getName(), session);
-            System.out.println("usuario conectado " + userId);
+            System.out.println("usuario conectado " + userId+"(UserController.java:36)");
         });
     }
 
     @Delete("/connection")
     public void closeConnection(@RequestParam UUID userId) {
-        System.out.println("Desconectado -> "+userId );
+        System.out.println("Desconectado -> "+userId+"(UserController.java:42)" );
         userOnlineManager.remove(userId);
 
     }

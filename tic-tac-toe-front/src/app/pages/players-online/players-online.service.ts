@@ -26,23 +26,9 @@ export class PlayersOnlineService {
 
     return this.responseListener.listen(StatusCode.USERS_ONLINE).pipe(
       map((response) => {
-        const users = response.body as User[];
-        const userId = this.cookieServive.getValue('user_id');
-        return users.filter((user) => user.id != userId);
+        return response.body as User[];
       })
     );
-    // const $getUsersRequest = timer(0, 10000).pipe(
-    //   switchMap((number: number) => {
-    //     this.requestSender.get('/user');
-    //     return of(number);
-    //   })
-    // );
-
-    // const $getUsersResponse = this.responseListener
-    //   .listen(StatusCode.USERS_ONLINE)
-    //   .pipe(map((response: Response<any>) => response.body as User[]));
-
-    // return merge($getUsersRequest, $getUsersResponse).pipe(filter((value: any| number)=> typeof(value) !== 'number'))
   }
 
   complete() {}

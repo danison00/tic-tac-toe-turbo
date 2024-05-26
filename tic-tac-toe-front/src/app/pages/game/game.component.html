@@ -26,9 +26,45 @@
       Aguarde sua vez! <span class="wait">⏳</span>
     </h4>
   </div>
-  <div>
-    <button>Desistir</button>
-  </div>
+  <section class="tool">
+    <div class="tool-btn mode-btn" [ngClass]="{'tool-btn-open': toolHost}">O</div>
+    <div class="tool-btn give-up-btn" [ngClass]="{'tool-btn-open': toolHost}">
+      <svg
+        style="width: 20px; height: 17px"
+        width="35"
+        height="46"
+        viewBox="0 0 35 46"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M2.75897 4.32965L3.40452 45" stroke="white" stroke-width="4" />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M17.621 6.0239C13.6403 3.95613 8.87489 4.08665 5.01336 6.3692L2.93012 7.60061L0.894714 4.15719L2.97795 2.92578C8.02764 -0.0590885 14.2594 -0.229766 19.4649 2.47424L22.4318 4.0154C23.7817 4.71662 25.3476 4.87892 26.8127 4.46945L32.9393 2.75713L34.016 6.60949L27.8893 8.32182C25.4476 9.00426 22.8378 8.73376 20.5879 7.56506L17.621 6.0239Z"
+          fill="white"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M30.2292 29.9799L30.0472 3.69096L30.0556 3.72621L34.0358 2.49963L34.2217 29.3385L34.077 28.8124L30.8318 29.9666L30.2292 29.9799Z"
+          fill="white"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M5.92044 29.4756C9.66754 27.2552 14.2776 27.0589 18.1998 28.9527L21.2601 30.4302C23.462 31.4933 25.977 31.7129 28.3298 31.0474L30.366 30.4715L30.3053 30.208L34.0246 29.2188L32.993 25.5715L27.2411 27.1984C25.8294 27.5977 24.3204 27.466 22.9993 26.8281L19.939 25.3506C14.8099 22.8741 8.78139 23.1308 3.88135 26.0343L1.58002 27.398L3.61911 30.8392L5.92044 29.4756Z"
+          fill="white"
+        />
+      </svg>
+    </div>
+    <div class="btn-host" for="check-aux" (click)="toolHost = !toolHost">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </section>
+
   <container-message></container-message>
 </main>
 <app-modal-play-end

@@ -28,7 +28,6 @@ public class OpaqueTokenIntrospector implements org.springframework.security.oau
         try {
 
             UserInfo userInfo = webClient.get()
-
                     .uri(uriBuilder -> uriBuilder
                             .path("/oauth2/v3/userinfo")
                             .queryParam("access_token", token).build())

@@ -43,9 +43,8 @@ export class ContainerMessageComponent
     if (this.payloadMessage.trim() == '') return;
     const message = this.messageService.sendMessage(this.payloadMessage);
     this.messages.push(message);
-    console.log(this.messages);
-    this.payloadMessage = '';
     this.scrollMessage();
+    this.payloadMessage = '';
   }
   onKeyDown($event: KeyboardEvent) {
     if ($event.key == 'Enter') {

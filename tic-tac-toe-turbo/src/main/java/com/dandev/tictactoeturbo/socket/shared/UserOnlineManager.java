@@ -17,7 +17,6 @@ public class UserOnlineManager extends AbstractObservableUserManager<UserOnlineM
 
     private final Map<UUID, UserOnline> users = new ConcurrentHashMap<>();
 
-
     public Optional<UserOnline> getById(UUID id) {
         UserOnline userOn = users.get(id);
         if (userOn == null) return Optional.empty();
@@ -29,28 +28,20 @@ public class UserOnlineManager extends AbstractObservableUserManager<UserOnlineM
         var userOnline = new UserOnline(id, name, session, UserOnlineStatus.ONLINE);
         users.put(id, userOnline);
         notifyObserversSingleUser(userOnline);
-        notifyObserversListUser(this.users.values().stream().toList());
-
+        var lisUsers = this.users.values().stream().toList();
+        notifyObserversListUser(lisUsers);
     }
 
     public void remove(UUID id) {
-
-        var userOnline = users.remove(id);
-        if (userOnline != null) {
-            try {
-                userOnline.session.close();
+            var userOnline = users.remove(id);
+            if (userOnline != null) {
                 var userOffline = new UserOnline(userOnline.id, userOnline.name(), null, UserOnlineStatus.OFFLINE);
                 notifyObserversSingleUser(userOffline);
                 notifyObserversListUser(this.users.values().stream().toList());
-            } catch (IOException e) {
             }
-        }
-
     }
 
     public List<UserView> getAll() {
-
-
         return users.values()
                 .stream()
                 .map(userOnline -> new UserView(
@@ -58,7 +49,6 @@ public class UserOnlineManager extends AbstractObservableUserManager<UserOnlineM
                         userOnline.name))
                 .toList();
     }
-
 
 
     public record UserOnline(UUID id, String name, WebSocketSession session, UserOnlineStatus status) {

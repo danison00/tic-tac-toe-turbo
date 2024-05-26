@@ -1,5 +1,6 @@
 package com.dandev.tictactoeturbo.socket.controllers;
 
+import com.dandev.tictactoeturbo.socket.dtos.Game;
 import com.dandev.tictactoeturbo.socket.dtos.UserView;
 import com.dandev.tictactoeturbo.socket.infra.classes.Response;
 import com.dandev.tictactoeturbo.socket.infra.enums.ResponseStatusCode;
@@ -9,6 +10,7 @@ import com.dandev.tictactoeturbo.socket.infra.reflection.annotations.WebSocketCo
 
 import static com.dandev.tictactoeturbo.socket.shared.UserOnlineManager.UserOnline;
 
+import com.dandev.tictactoeturbo.socket.service.GameService;
 import com.dandev.tictactoeturbo.socket.shared.UserOnlineManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +22,9 @@ public class ChallengeController {
 
 
     @Autowired
+    private GameService gameService;
+
+    @Autowired
     private UserOnlineManager userOnlineManager;
 
 
@@ -27,6 +32,9 @@ public class ChallengeController {
     public Response<?> newChallenge(@RequestParam UUID userId, @RequestParam UUID idPlayerReceiver) {
 
         Optional<UserOnline> playerSenderOpt = userOnlineManager.getById(userId);
+        Optional<Game> gameOpt = gameService.getByPlayers(userId, idPlayerReceiver);
+        if (gameOpt.isPresent())
+            return Response.idReceiver(userId).body(gameOpt.get().getId()).status(ResponseStatusCode.NEW_GAME);
 
         return playerSenderOpt.map(userOnline ->
                 Response.idReceiver(idPlayerReceiver)

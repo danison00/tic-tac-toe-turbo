@@ -56,7 +56,7 @@
       </svg>
     </span>
   </header>
-  <div class="body" #messageContainer>
+  <div class="body" [ngClass]="{'opacity-0':hiddenMessageContainer}" #messageContainer>
     <message *ngFor="let message of messages" [message]="message"></message>
     <div #endMessage class="end"></div>
   </div>

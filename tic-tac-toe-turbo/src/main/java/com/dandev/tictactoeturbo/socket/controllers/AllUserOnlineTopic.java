@@ -28,17 +28,16 @@ public class AllUserOnlineTopic {
     public AllUserOnlineTopic(UserOnlineManager userOnlineManager) {
 
         this.userOnlineManager = userOnlineManager;
-        this.userOnlineManager.observerUsersOnline((usersOnline) -> {
-            subscriptions.forEach((uuid, userOnline) -> {
-                if (userOnline.session().isOpen()) {
+        this.userOnlineManager.observerUsersOnline((allUsersOnline) -> {
+            subscriptions.forEach((uuidSubscriber, subscriber) -> {
+
                     responseService.send(
-                            Response.idReceiver(uuid)
-                                    .body(usersOnline.stream().map(userOn -> new UserView(userOnline.id(), userOnline.name())))
-                                    .status(ResponseStatusCode.USERS_ONLINE));
-                } else {
-                    subscriptions.remove(uuid);
-                }
+                            Response.idReceiver(uuidSubscriber)
+                                    .body(allUsersOnline.stream().map(userOn -> new UserView(userOn.id(), userOn.name())).filter((userview)->!userview.id().equals(uuidSubscriber)).toList())
+                                    .status(ResponseStatusCode.USERS_ONLINE)
+                    );
             });
+            System.out.println("Enviando users online -> "+allUsersOnline);
         });
     }
 
@@ -46,12 +45,11 @@ public class AllUserOnlineTopic {
     @Get
     public Response<List<UserView>> getAllUsers(@RequestParam UUID userId) {
         Optional<UserOnline> userOnlineOpt = userOnlineManager.getById(userId);
-
-        if (userOnlineOpt.isEmpty()) {
+        if (userOnlineOpt.isEmpty())
             return null;
-        }
 
         subscriptions.put(userId, userOnlineOpt.get());
+        System.out.println("User subscribe in AllUserTopic(AllUserOnlineTopic.java:52)");
         return Response
                 .idReceiver(userId)
                 .body(userOnlineManager.getAll()

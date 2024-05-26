@@ -19,6 +19,66 @@ main {
   grid-template-columns: repeat(3, 1fr);
   animation: rotate 0.2s ease-out;
 }
+.info-tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.tool {
+  position: fixed;
+  bottom: 3rem;
+  left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+.btn-host {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #9292922d;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+  &:hover {
+    background-color: #9292925c;
+  }
+  .dot {
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #929292;
+  }
+}
+
+.tool-btn {
+  cursor: pointer;
+  background-color: #bcbcbc;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .3s;
+  display: none;
+  &:hover{
+    background-color: #b1b1b1;
+  }
+}
+.tool-btn-open{
+  display: flex;
+  animation: tool-btn-animation-open .3s;
+}
+.tool-btn-close{
+  animation: tool-btn-animation-close .3s;
+}
+
 .box {
   position: relative;
   cursor: pointer;
@@ -78,6 +138,28 @@ main {
 .wait {
   animation: waitEmoji 2s infinite;
   display: inline-flex;
+}
+
+@keyframes tool-btn-animation-open{
+  from{
+    transform: translateY(80%);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tool-btn-animation-close{
+  from{
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to{
+    transform: translateY(60%);
+    opacity: 0;
+  }
 }
 @keyframes hidden {
   from {
