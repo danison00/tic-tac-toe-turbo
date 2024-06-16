@@ -14,15 +14,12 @@ public class CorsFilterConfigBean {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // Permite o envio de cookies
-        config.addAllowedOrigin("*"); // Domínio permitido
-        // config.addAllowedOrigin("http://localhost:4200/");
-        // config.addAllowedOrigin("http://ec2-3-12-196-39.us-east-2.compute.amazonaws.com:8080");
+        config.addAllowedOriginPattern("*"); // Domínio permitido
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
-        var corsFilter = new CorsFilter(source);
-        System.out.println(corsFilter);
-        return corsFilter;
+        return new CorsFilter(source);
+
     }
 
 
