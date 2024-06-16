@@ -20,8 +20,9 @@ public class CorsFilterConfigBean {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
-        System.out.println(this);
-        return new CorsFilter(source);
+        var corsFilter = new CorsFilter(source);
+        System.out.println(corsFilter)
+        return corsFilter;
     }
 
 
