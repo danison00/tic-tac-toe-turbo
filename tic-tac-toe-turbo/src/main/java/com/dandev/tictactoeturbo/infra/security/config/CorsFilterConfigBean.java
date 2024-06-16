@@ -21,7 +21,7 @@ public class CorsFilterConfigBean {
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         var corsFilter = new CorsFilter(source);
-        System.out.println(corsFilter)
+        System.out.println(corsFilter);
         return corsFilter;
     }
 
