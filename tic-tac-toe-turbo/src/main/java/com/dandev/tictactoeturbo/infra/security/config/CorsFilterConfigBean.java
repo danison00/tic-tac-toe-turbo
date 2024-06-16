@@ -20,6 +20,7 @@ public class CorsFilterConfigBean {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
+        System.out.println(this);
         return new CorsFilter(source);
     }
 
